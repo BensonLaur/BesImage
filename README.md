@@ -3,6 +3,11 @@
 
 本项目旨在实现一个通用的图像查看器，可以通过配置，自定义地接入不同的软件。使用开源协议：MIT
 
+当前最新截图：
+
+<img src="https://github.com/BensonLaur/image-storage/raw/master/BesImage%20project/current.png" width="60%" height="60%">
+
+
 ## 背景
 
 BesImage, 图像查看器，旨在实现图像预览和打印功能。市面上已经有软件实现了预览和打印的功能了，但是如果要将该功能作为一个模块加入不同的软件中，在通用性上，就显得比较不足了——比如想要自定义皮肤，自定义软件语言，自定义功能项等。
