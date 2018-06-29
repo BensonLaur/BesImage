@@ -12,8 +12,11 @@
 #include <QTreeView>
 #include <QListWidget>
 #include <QAbstractScrollArea>
+#include "absFiles/basewindow.h"
+#include "topWidget/topwidgets.h"
+#include "middleWidget/middleWidget.h"
 
-class MainWindow : public QMainWindow
+class MainWindow : public baseWindow
 {
     Q_OBJECT
 
@@ -24,16 +27,15 @@ public:
 private:
     void initUI();          //初始化UI
 
-    bool LoadFloder(QString DirPath); //载入文件夹
+    void clearBackground();
 
-public Q_SLOTS:
-    void showSelectedImg(const QModelIndex &index);
+    void setCurBGPic(const QString&);
 
 
-    private:
-    QTreeView* fileTree;    //文件树
-    QListWidget *imageList; //缩略图标
 
+private:
+    TopWidgets topWidget;
+    MiddleWidget midWidget;
 
 
     QString lastResultMessage;                      //储存最后的结果信息
