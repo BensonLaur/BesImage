@@ -2,9 +2,7 @@
 
 PageShowImage::PageShowImage(QWidget*parent)
     :baseWidget(parent)
-    ,image("E:\\project\\Qt project\\BesImage\\BesImage\\image\\middlewidget\\lab_backups.png")
-    ,imageLabel(this)
-    //,imageScaler(this)
+    ,imageScaler(this)
 {
     setStyleSheet("baseWidget{background:black;}");
     initLayout();
@@ -13,18 +11,15 @@ PageShowImage::PageShowImage(QWidget*parent)
 
 void PageShowImage::initLayout()
 {
-//    imageScaler.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-//    imageScaler.setMinimumSize(500,500);
-//    imageScaler.setMaximumSize(2000,2000);
+    SetImageForShow(":/image/skin/default.jpg");
 
-    //imageScaler.SetImage("C:\\Users\\Benso\\Desktop\\12313123.png");
-
-//    QHBoxLayout* hLayout = new QHBoxLayout();
-//    hLayout->addWidget(&imageLabel);
-//    setLayout(hLayout);
-
-//    QSize labelSize = imageScaler.size();
+	QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->addWidget(&imageScaler);
+	setLayout(hLayout);
+}
 
 
-//    imageLabel.setAlignment(Qt::AlignCenter);
+void PageShowImage::SetImageForShow(QString path)
+{
+    imageScaler.SetImage(QImage(path));
 }

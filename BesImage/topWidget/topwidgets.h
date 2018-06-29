@@ -1,6 +1,7 @@
-#ifndef TOPWIDGETS_H
+﻿#ifndef TOPWIDGETS_H
 #define TOPWIDGETS_H
 
+#include "global.h"
 #include <QObject>
 #include <QWidget>
 #include<QPushButton>

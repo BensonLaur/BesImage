@@ -14,6 +14,9 @@ PageSelectImage::PageSelectImage(QWidget *parent) : baseWidget(parent),
     connect(&fileTree,SIGNAL(clicked(const QModelIndex&)),this,SLOT(showSelectedImg(const QModelIndex&)));
 
     connect(&m_btnhidelist,SIGNAL(clicked(bool)),this,SLOT(slot_btnclicked()));
+
+    connect(&imageList, SIGNAL(doubleClicked(QModelIndex)),this, SLOT(OnClickImgItem(QModelIndex)));
+
 }
 
 
@@ -171,6 +174,10 @@ bool PageSelectImage::LoadFloder(QString path) //载入文件夹
         //imageItem->setText(tr("Browse"));
         //重新设置单元项图片的宽度和高度
         imageItem->setSizeHint(sizeIconLast);
+
+        //保存路径数据提示中，后面取出
+        imageItem->setData(Qt::StatusTipRole, tmp);
+
         //将单元项添加到QListWidget中
         imageList.addItem(imageItem);
     }
@@ -224,4 +231,14 @@ void PageSelectImage::slot_btnclicked()
         fileTree.hide();
         setlistShowStyle();
     }
+}
+
+
+void PageSelectImage::OnClickImgItem(const QModelIndex &index)
+{
+    QString tip = index.data(Qt::StatusTipRole).toString();
+
+    //发送选择路径的信号，pageShowImage 的槽会接收路径显示图片
+    emit(OnSelectPath(tip));
+
 }

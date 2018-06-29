@@ -12,7 +12,7 @@ public:
     explicit topSearchTipsWidget(QWidget*p=0);
 
 public slots:
-    void slot_textchanged(QString);
+    //void slot_textchanged(QString);
 protected:
     void mouseMoveEvent(QMouseEvent*);
     void leaveEvent(QEvent *);

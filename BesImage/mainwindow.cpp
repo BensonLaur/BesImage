@@ -25,7 +25,7 @@ void MainWindow::initUI()
 
     m_mainwid.setLayout(vlyout);
 
-    setCurBGPic("E:\\project\\Qt project\\BesImage\\BesImage\\image\\skin\\默认.jpg");
+    setCurBGPic(":/image/skin/default.jpg");
 }
 
 

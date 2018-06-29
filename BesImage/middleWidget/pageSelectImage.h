@@ -43,6 +43,13 @@ public Q_SLOTS:
     virtual void wheelEvent(QWheelEvent *event);
 
     void slot_btnclicked();
+
+    void OnClickImgItem(const QModelIndex &index);
+
+ signals:
+
+    void OnSelectPath(QString imagePath);
+
 private:
     QTreeView fileTree;             //文件树
 

@@ -26,7 +26,10 @@ private slots:
 //    void setWidgetOpacity(int);
     void slot_changeButtonSelected(int i);//改变选中图片
     void slot_finished(){m_isAnima=false;}
-
+    void SwitchToShowPage()
+    {
+        m_stackwid.setCurrentIndex(1);
+    }
 private:
     stackButton *m_btn[2];
 

@@ -34,7 +34,8 @@ include(middleWidget/middleWidget.pri)
 SOURCES += main.cpp\
         mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    global.h
 
 DISTFILES +=
 

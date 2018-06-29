@@ -16,6 +16,9 @@ MiddleWidget::MiddleWidget(QWidget *parent) : baseWidget(parent),
 
     initWidget();
     initAnimation();
+
+    connect(&pageSelect, SIGNAL(OnSelectPath(QString)), &pageShow, SLOT(SetImageForShow(QString)));
+    connect(&pageSelect, SIGNAL(OnSelectPath(QString)), this, SLOT(SwitchToShowPage()));
 }
 
 void MiddleWidget::initWidget()

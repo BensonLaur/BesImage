@@ -16,10 +16,11 @@ public:
    explicit PageShowImage(QWidget *parent);
     void initLayout();
 
-    QImage image;
-    QLabel imageLabel;
+public slots:
+    void SetImageForShow(QString path);
 
-    //WidgetImageScaler imageScaler;
+private:
+    WidgetImageScaler imageScaler;
 };
 
 #endif // MIDDLELEFTSTACKWIDGET2_H

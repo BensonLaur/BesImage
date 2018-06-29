@@ -15,23 +15,38 @@
 class WidgetImageScaler:public QWidget
 {
     Q_OBJECT
+
+	//图片操作类型
+	enum  Type 
+	{
+		None = 0,
+		Amplification,
+		Shrink,
+		Lift,
+		Right,
+		Up,
+		Down,
+		Move
+	};
+
 public:
    explicit WidgetImageScaler(QWidget *parent);
 
+   //设置显示的图片
+   void SetImage(QString imagePath);
    void SetImage(QImage image);
    void SetImage(QPixmap pixmap);
-   void SetImage(QString imagePath);
 
    void initLayout();
 
-
+   //处理事件
    bool event(QEvent * event);
    void wheelEvent(QWheelEvent* e);     //鼠标滑轮事件
-
    void paintEvent(QPaintEvent *event);
 
-   QPixmap m_pixmap;
-   QPixmap m_pixmapToshow;
+private:
+   QPixmap m_pixmap;			//传入的图像数据
+   QPixmap m_pixmapToshow;		//中间变量
 
     int action;          //动作(放大,缩小,移动...)
     int pixW;            //图片宽
@@ -44,16 +59,6 @@ public:
     QPoint Alloffset;           //总偏移
     QLabel label;
 
-    enum  Type {
-            None          = 0,
-            Amplification ,
-            Shrink,
-            Lift,
-            Right,
-            Up,
-            Down,
-            Move
-        };
 };
 
 #endif // WIDGET_IMAGE_SCALER_H
