@@ -11,6 +11,10 @@
 #include <QPainter>
 #include "baseWidget.h"
 
+#include <QtPrintSupport/QPrintPreviewDialog>
+#include <QtPrintSupport/QPrintDialog>
+#include <QtPrintSupport/QPrinter>
+
 //参考 https://www.cnblogs.com/lifexy/p/9057046.html
 
 class WidgetImageScaler:public baseWidget
@@ -48,9 +52,13 @@ public:
    bool HasNextImage();             //查询当前是否有下一张图片
    bool HasPreImage();              //查询当前是否有上一张图片
 
+   void printCurrentImage();        //
+
 public slots:
    bool ShowNextImage();            //显示下一张图片
    bool ShowPreImage();             //显示上一张图片
+
+   void printPreviewSlot(QPrinter *printerPixmap);  //预览当前图片
 
 private:
    void initImageDataWithPixmap(const QPixmap& pixmap);        //初始化显示图像的数据

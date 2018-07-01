@@ -33,17 +33,15 @@ private slots:
     {
         m_isAnima=false;
     }
-    void SwitchToShowPage()
-    {
-        m_stackwid.setCurrentIndex(1);
-    }
 
-    //    void setWidgetOpacity(int);
+    void SwitchToShowPage(){m_stackwid.setCurrentIndex(1);}
+    void returnToSelect(){m_stackwid.setCurrentIndex(0);}
 
 protected:
     void paintEvent(QPaintEvent *);
 
-private:
+public:
+    int mHeaderButtonHeight;        //页面按钮高度
     stackButton *m_btn[2];
 
     QStackedWidget  m_stackwid;

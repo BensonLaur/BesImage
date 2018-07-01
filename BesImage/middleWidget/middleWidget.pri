@@ -1,4 +1,6 @@
 
+QT +=printsupport
+
 SOURCES +=$$PWD/middleWidget.cpp \
     $$PWD/pageSelectImage.cpp \
     $$PWD/pageShowImage.cpp \

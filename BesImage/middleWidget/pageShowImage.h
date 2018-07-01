@@ -32,10 +32,11 @@ public slots:
     //更新左右按钮的显示状态
     void UpdateLeftRightButtonStatus();
 
+
 protected:
     virtual void resizeEvent(QResizeEvent* event);
 
-private:
+public:
     WidgetImageScaler imageScaler;
 
     myPushButton buttonLeft;

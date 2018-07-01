@@ -42,6 +42,9 @@ private:
 public slots:
     void OnHeaderMouseDoubleClickEvent(QMouseEvent *e);
 
+    void previewCurrentImage();
+    void printCurrentImage();
+    void printCurrentDir();
 
 private:
     TopWidgets topWidget;

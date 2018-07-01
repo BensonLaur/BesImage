@@ -7,7 +7,11 @@
 #include<QApplication>
 
 
-TopWidgets::TopWidgets(QWidget *parent) : baseWidget(parent)
+TopWidgets::TopWidgets(QWidget *parent) :
+    baseWidget(parent)
+  ,m_btnexit(this)
+  ,m_btnmini(this)
+    ,m_toolbar(this)
 {
     setStyleSheet("TopWidgets{background:transparent;}");
     setMouseTracking(true);
@@ -27,11 +31,13 @@ void TopWidgets::mouseDoubleClickEvent(QMouseEvent *event)
 
 void TopWidgets::initWidget()
 {
-    setMinimumSize(500,50);
-    setMaximumSize(1920,50);
+    setMinimumSize(500,90);
+    setMaximumSize(1920,90);
     setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
-    QHBoxLayout *hmainyout=new QHBoxLayout;
+    QVBoxLayout *hmainyout=new QVBoxLayout;
+
+    QHBoxLayout *hHeaderlyout=new QHBoxLayout;
 
     QHBoxLayout *hyout1=new QHBoxLayout;
 
@@ -52,10 +58,16 @@ void TopWidgets::initWidget()
     hyout1->addWidget(&m_btnexit);
     hyout1->setSpacing(12);
 
-   //hmainyout->addSpacerItem(new QSpacerItem(80,30,QSizePolicy::Maximum));//设置它最大膨胀！！！
-    hmainyout->addSpacerItem(new QSpacerItem(110,30,QSizePolicy::Expanding));//膨胀
-    hmainyout->addLayout(hyout1);
+   //hHeaderlyout->addSpacerItem(new QSpacerItem(80,30,QSizePolicy::Maximum));//设置它最大膨胀！！！
+    hHeaderlyout->addSpacerItem(new QSpacerItem(110,50,QSizePolicy::Expanding));//膨胀
+    hHeaderlyout->addLayout(hyout1);
+    hHeaderlyout->setSpacing(0);
+    hHeaderlyout->setContentsMargins(16,0,15,0);
+
     hmainyout->setSpacing(0);
-    hmainyout->setContentsMargins(16,0,15,0);
+    hmainyout->addLayout(hHeaderlyout);
+    hmainyout->addWidget(&m_toolbar);
+    hmainyout->setContentsMargins(0,0,0,0);
+
     setLayout(hmainyout);
 }

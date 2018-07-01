@@ -17,6 +17,11 @@
 #include <QFileIconProvider>
 #include <QHBoxLayout>
 
+#include <QPainter>
+#include <QtPrintSupport/QPrintPreviewDialog>
+#include <QtPrintSupport/QPrintDialog>
+#include <QtPrintSupport/QPrinter>
+
 class PageSelectImage : public baseWidget
 {
 
@@ -34,6 +39,8 @@ public:
     void SetImageSuffixFilters(QStringList suffixList); //设置图片后缀名过滤，形如如"png"
 
     bool ScaleImageListOnce(bool bAdding);              //缩放列表一次， bAdding 表示是否增加大小
+
+    void printLastSelectFiles();                        //打印最后一次选择的图片
 
 protected:
     bool eventFilter(QObject *, QEvent *);
@@ -62,6 +69,7 @@ private:
 
     QStringList  listSuffixFilters;         //文件后缀列表，形如"png"
     QSize sizeIconLast;                     //最后显示的图标大小
+    QVector<QString> vecLastFilePath;       //最后一次选择的文件夹路径
 
     bool bNeedToReloadImageSet;     //标记是否需要重新载入整个图像集合
 

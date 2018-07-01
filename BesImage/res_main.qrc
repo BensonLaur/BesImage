@@ -5,5 +5,17 @@
         <file>image/main/kugou.ico</file>
         <file>image/skin/默认.jpg</file>
         <file>image/skin/default.jpg</file>
+        <file>image/toolbar/btnReturn-hover.png</file>
+        <file>image/toolbar/btnReturn-normal.png</file>
+        <file>image/toolbar/btnReturn-press.png</file>
+        <file>image/toolbar/print-all-hover.png</file>
+        <file>image/toolbar/print-all-normal.png</file>
+        <file>image/toolbar/print-all-press.png</file>
+        <file>image/toolbar/print-one-hover.png</file>
+        <file>image/toolbar/print-one-normal.png</file>
+        <file>image/toolbar/print-one-press.png</file>
+        <file>image/toolbar/print-preview-hover.png</file>
+        <file>image/toolbar/print-preview-normal.png</file>
+        <file>image/toolbar/print-preview-press.png</file>
     </qresource>
 </RCC>

@@ -102,6 +102,7 @@ bool WidgetImageScaler::ShowPreImage()
     return true;
 }
 
+
 //显示选中的图片
 bool WidgetImageScaler::ShowSelImage(int indexSel)
 {
@@ -113,6 +114,63 @@ bool WidgetImageScaler::ShowSelImage(int indexSel)
     m_indexCurPixmap = indexSel;
 
     return true;
+}
+
+//预览当前图片
+void WidgetImageScaler::printPreviewSlot(QPrinter *printerPixmap)
+{
+    if(m_vecPixmap.size() == 0 || m_indexCurPixmap < 0 || m_indexCurPixmap >= m_vecPixmap.size())
+        return;
+
+
+    //获取界面的图片
+    QPixmap pixmap = m_vecPixmap[m_indexCurPixmap];
+
+    printerPixmap->setPageSize(QPagedPaintDevice::A4);
+    QPagedPaintDevice::Margins margins = QPagedPaintDevice::Margins{10,10,10,10};
+    printerPixmap->setMargins(margins);
+    printerPixmap->setOrientation(QPrinter::Portrait);
+    printerPixmap->setOrientation(QPrinter::Landscape);
+//    printerPixmap->setPageSize(QPrinter::Custom);
+//    printerPixmap->setPaperSize(QSizeF(pixmap.height(),pixmap.width()),QPrinter::Point);
+
+    QPainter painterPixmap(this);
+    painterPixmap.begin(printerPixmap);
+    QRect rect = painterPixmap.viewport();
+    double x = 1.0 * rect.width() / pixmap.width();
+    double y = 1.0 * rect.height() / pixmap.height();
+    painterPixmap.scale(x, y);
+    painterPixmap.drawPixmap(0, 0, pixmap);
+    painterPixmap.end();
+}
+
+void WidgetImageScaler::printCurrentImage()
+{
+    if(m_vecPixmap.size() == 0 || m_indexCurPixmap < 0 || m_indexCurPixmap >= m_vecPixmap.size())
+        return;
+
+    QPrinter* printerPixmap= new QPrinter();
+    QPixmap pixmap = m_vecPixmap[m_indexCurPixmap];
+
+
+    printerPixmap->setPageSize(QPagedPaintDevice::A4);
+    QPagedPaintDevice::Margins margins = QPagedPaintDevice::Margins{10,10,10,10};
+    printerPixmap->setMargins(margins);
+    printerPixmap->setOrientation(QPrinter::Portrait);
+    printerPixmap->setOrientation(QPrinter::Landscape);
+
+    QPrintDialog print(printerPixmap, this);
+    if (print.exec())
+    {
+       QPainter painterPixmap;
+       painterPixmap.begin(printerPixmap);
+       QRect rect = painterPixmap.viewport();
+       double x = 1.0 * rect.width() / pixmap.width();
+       double y = 1.0 * rect.height() / pixmap.height();
+       painterPixmap.scale(x, y);
+       painterPixmap.drawPixmap(0, 0, pixmap);
+       painterPixmap.end();
+    }
 }
 
 //查询当前是否有下一张图片

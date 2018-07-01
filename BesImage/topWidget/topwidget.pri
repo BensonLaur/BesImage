@@ -1,6 +1,6 @@
 
 SOURCES +=$$PWD/topwidgets.cpp\
-$$PWD/topSearchTipsWidget.cpp\
+    $$PWD/toolbarWidget.cpp
 
 HEADERS +=$$PWD/topwidgets.h\
-$$PWD/topSearchTipsWidget.h\
+    $$PWD/toolbarWidget.h

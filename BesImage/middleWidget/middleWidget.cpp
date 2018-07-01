@@ -12,6 +12,7 @@ MiddleWidget::MiddleWidget(QWidget *parent) : baseWidget(parent),
     pageShow(this),
     m_animation(this,"m_x"),
     m_Widanimation(this,"geometry")
+    ,mHeaderButtonHeight(0)
 {
 
     initWidget();
@@ -42,8 +43,8 @@ void MiddleWidget::initWidget()
     m_btn[0]=new stackButton(":/image/middlewidget/btn_music (1).png",":/image/middlewidget/btn_music (2).png",":/image/middlewidget/btn_music (3).png",this);
     m_btn[1]=new stackButton(":/image/middlewidget/btn_cloud (1).png",":/image/middlewidget/btn_cloud (2).png",":/image/middlewidget/btn_cloud (3).png",this);
 
-    m_btn[0]->setFixedHeight(40);
-    m_btn[1]->setFixedHeight(40);
+    m_btn[0]->setFixedHeight(mHeaderButtonHeight);
+    m_btn[1]->setFixedHeight(mHeaderButtonHeight);
 
     QHBoxLayout *hlyout=new QHBoxLayout;
     hlyout->addWidget(m_btn[0]);
@@ -116,15 +117,15 @@ void MiddleWidget::slot_changeButtonSelected(int index)
     if(index>m_preItem)
     {
         m_Widanimation.setTargetObject(&m_stackwid);
-        m_Widanimation.setStartValue(QRect(m_stackwid.width(),40,m_stackwid.width(),m_stackwid.height()));
-        m_Widanimation.setEndValue(QRect(0,40,m_stackwid.width(),m_stackwid.height()));
+        m_Widanimation.setStartValue(QRect(m_stackwid.width(),mHeaderButtonHeight,m_stackwid.width(),m_stackwid.height()));
+        m_Widanimation.setEndValue(QRect(0,mHeaderButtonHeight,m_stackwid.width(),m_stackwid.height()));
         m_Widanimation.start();
     }
     if(index<m_preItem)
     {
         m_Widanimation.setTargetObject(&m_stackwid);
-        m_Widanimation.setStartValue(QRect(-m_stackwid.width(),40,m_stackwid.width(),m_stackwid.height()));
-        m_Widanimation.setEndValue(QRect(0,40,m_stackwid.width(),m_stackwid.height()));
+        m_Widanimation.setStartValue(QRect(-m_stackwid.width(),mHeaderButtonHeight,m_stackwid.width(),m_stackwid.height()));
+        m_Widanimation.setEndValue(QRect(0,mHeaderButtonHeight,m_stackwid.width(),m_stackwid.height()));
         m_Widanimation.start();
     }
     m_preItem=index;
