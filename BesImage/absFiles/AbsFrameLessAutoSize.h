@@ -1,4 +1,4 @@
-#ifndef ABSFRAMELESSAUTOSIZE_H
+﻿#ifndef ABSFRAMELESSAUTOSIZE_H
 #define ABSFRAMELESSAUTOSIZE_H
 
 #include <QWidget>
@@ -24,7 +24,7 @@ public:
     inline void setBorder(int border);
     void mouseMoveRect(const QPoint &p);
 protected:
-    virtual void mouseMoveEvent(QMouseEvent *event); //交给别个调用
+    virtual void mouseMoveEvent(QMouseEvent *event); //交给别个调用(给子窗口调用，鼠标图标才能够表现“正常”)
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
     pressWindowsState m_state;

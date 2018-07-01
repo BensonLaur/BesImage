@@ -1,4 +1,4 @@
-#include "AbsFrameLessAutoSize.h"
+﻿#include "AbsFrameLessAutoSize.h"
 #include<qdebug.h>
 AbsFrameLessAutoSize::AbsFrameLessAutoSize(QWidget *parent)
     : QWidget(parent)
@@ -6,7 +6,7 @@ AbsFrameLessAutoSize::AbsFrameLessAutoSize(QWidget *parent)
 
     m_state.MousePressed=false;
     m_state.IsPressBorder=false;
-    setMinimumSize(400,550);
+    setMinimumSize(500,500);
     m_border=4;
 
     setMouseTracking(true);
@@ -221,5 +221,5 @@ void AbsFrameLessAutoSize::mouseReleaseEvent(QMouseEvent *event)
     {
         this->m_state.MousePressed = false;
     }
-    setCursor(Qt::PointingHandCursor);
+    setCursor(Qt::ArrowCursor);
 }

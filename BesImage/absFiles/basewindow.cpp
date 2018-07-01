@@ -1,16 +1,17 @@
-#include "basewindow.h"
+﻿#include "basewindow.h"
 #include<QGridLayout>
 #include<QPushButton>
 #include<QDebug>
 #include<QLineEdit>
 
 baseWindow::baseWindow(QWidget *parent)
-    : AbsFrameLessAutoSize(parent)
-    , m_mainwid(this)
+    : AbsFrameLessAutoSize(parent),
+     m_mainwid(this)
 {
     m_border=8;
     setMinimumSize(550,440);
     setWindowFlags(Qt::FramelessWindowHint);
+
     setAttribute(Qt::WA_TranslucentBackground,true);
 
     setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -32,7 +33,6 @@ void baseWindow::paintEvent(QPaintEvent *e)
     path.addRect(9, 9, this->width()-18, this->height()-18);
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.fillPath(path, QBrush(Qt::white));
-
 
     QColor color(0, 0, 0, 50);
     for(int i=0; i<9; i++)

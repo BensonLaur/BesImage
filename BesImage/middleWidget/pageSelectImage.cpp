@@ -1,4 +1,5 @@
 ﻿#include "pageSelectImage.h"
+#include <QImageReader>
 
 PageSelectImage::PageSelectImage(QWidget *parent) : baseWidget(parent),
   fileTree(this),
@@ -9,9 +10,16 @@ PageSelectImage::PageSelectImage(QWidget *parent) : baseWidget(parent),
     setStyleSheet("PageSelectImage{background:transparent;}");
     setMouseTracking(true);
 
+    QList<QByteArray> listFormat =  QImageReader::supportedImageFormats();
+
+    QStringList list;
+    for(auto fomat:listFormat) list << fomat;
+    //list << "png" << "bmp" << "jpg";
+    SetImageSuffixFilters(list);
+
     initWidget();
 
-    connect(&fileTree,SIGNAL(clicked(const QModelIndex&)),this,SLOT(showSelectedImg(const QModelIndex&)));
+    connect(&fileTree,SIGNAL(clicked(const QModelIndex&)),this,SLOT(showImgUnderTreeItem(const QModelIndex&)));
 
     connect(&m_btnhidelist,SIGNAL(clicked(bool)),this,SLOT(slot_btnclicked()));
 
@@ -54,7 +62,10 @@ void PageSelectImage::initWidget()
     model->setFilter(QDir::AllDirs|QDir::NoDotAndDotDot|QDir::Files);
 
     QStringList nameFilters;
-    nameFilters << "*.bmp" << "*.png";
+    for(auto suffix: listSuffixFilters)
+    {
+        nameFilters << "*."+suffix;
+    }
     model->setNameFilters(nameFilters);
 
     model->iconProvider()->setOptions(QFileIconProvider::DontUseCustomDirectoryIcons);
@@ -132,7 +143,8 @@ void PageSelectImage::setlistHideStyle()
                                  "QPushButton:pressed{border-image:url(:/image/middlewidget/btn_listhide (3).png)}");
 }
 
-bool PageSelectImage::LoadFloder(QString path) //载入文件夹
+ //载入文件夹/文件
+bool PageSelectImage::LoadFloder(QString path)
 {
     bool bIsFloder = QDir().exists(path);
     bool bIsFile = QFile().exists(path);
@@ -153,10 +165,10 @@ bool PageSelectImage::LoadFloder(QString path) //载入文件夹
 
         foreach(QFileInfo finfo ,file_list)
         {
-           if(finfo.suffix()=="png" || finfo.suffix()=="bmp")
-           {
+           QString suffix = finfo.suffix().toLower();
+
+           if(listSuffixFilters.contains(suffix))
                vecFilePath.push_back(finfo.absoluteFilePath());
-           }
         }
     }
 
@@ -164,7 +176,6 @@ bool PageSelectImage::LoadFloder(QString path) //载入文件夹
         vecFilePath.push_back(path);
 
     imageList.clear();
-    vecLastFilePath = vecFilePath;
     for(auto tmp : vecFilePath)
     {
         //定义QListWidgetItem对象
@@ -182,10 +193,16 @@ bool PageSelectImage::LoadFloder(QString path) //载入文件夹
         imageList.addItem(imageItem);
     }
 
+    bNeedToReloadImageSet = true;
+
     return true;
 }
 
-
+//设置图片后缀名过滤，形如如"png"
+void PageSelectImage::SetImageSuffixFilters(QStringList suffixList)
+{
+    listSuffixFilters = suffixList;
+}
 
 bool PageSelectImage::ScaleImageListOnce(bool bAdding)   //缩放列表一次， bAdding 表示是否增加大小
 {
@@ -207,7 +224,7 @@ bool PageSelectImage::ScaleImageListOnce(bool bAdding)   //缩放列表一次，
     return true;
 }
 
-void PageSelectImage::showSelectedImg(const QModelIndex &index)
+void PageSelectImage::showImgUnderTreeItem(const QModelIndex &index)
 {
     QString path = index.data().toString();
     QModelIndex ParentIndex = index.parent();
@@ -236,9 +253,36 @@ void PageSelectImage::slot_btnclicked()
 
 void PageSelectImage::OnClickImgItem(const QModelIndex &index)
 {
-    QString tip = index.data(Qt::StatusTipRole).toString();
+    // path selected
+    QString pathSel = index.data(Qt::StatusTipRole).toString();
+
+    QVector<QString> vecImagePath;
+    int curSel = 0;
+    for(int i =0; i < imageList.count(); i++)
+    {
+        QString path = imageList.item(i)->data(Qt::StatusTipRole).toString();
+
+        if(!QFile::exists(path)) //不存在的文件,跳过
+            continue;
+
+        QDir dir(path);
+        if(dir.exists())  //目录，跳过
+            continue;
+
+        vecImagePath.push_back(path);
+
+        if(path == pathSel)
+            curSel = i;
+    }
 
     //发送选择路径的信号，pageShowImage 的槽会接收路径显示图片
-    emit(OnSelectPath(tip));
+    //emit(OnSelectOnePath(tip));
 
+    if(bNeedToReloadImageSet)
+    {
+        emit( OnSelectBunchPath(vecImagePath, curSel));  //发送整个图像集合
+        bNeedToReloadImageSet = false;
+    }
+    else
+        emit( OnSelectIndexInSet(curSel));      //发送显示的图像下标即可
 }

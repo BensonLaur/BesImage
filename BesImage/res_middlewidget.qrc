@@ -93,5 +93,11 @@
         <file>image/middlewidget/btn_search (3).png</file>
         <file>image/middlewidget/checked.png</file>
         <file>image/middlewidget/unchecked.png</file>
+        <file>image/showImage/leftButton-hover.png</file>
+        <file>image/showImage/leftButton-normal.png</file>
+        <file>image/showImage/leftButton-press.png</file>
+        <file>image/showImage/rightButton-hover.png</file>
+        <file>image/showImage/rightButton-normal.png</file>
+        <file>image/showImage/rightButton-press.png</file>
     </qresource>
 </RCC>

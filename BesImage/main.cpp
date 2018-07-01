@@ -30,9 +30,8 @@ int main(int argc, char *argv[])
                     "QPushButton:focus{padding: -1;}"
                     "QLabel:focus{padding: -1;}");
 
-    MainWindow m;
-    m.show();
-
+    MainWindow*pMain = MainWindow::GetInstance();
+    pMain->show();
 
     return app.exec();
 }

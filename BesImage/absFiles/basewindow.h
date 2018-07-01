@@ -1,4 +1,4 @@
-#ifndef BASEWINDOW_H
+﻿#ifndef BASEWINDOW_H
 #define BASEWINDOW_H
 
 #include <QMainWindow>
@@ -50,7 +50,7 @@ public:
     explicit baseWindow(QWidget *parent = 0);
     Widget m_mainwid;
 protected:
-    virtual void paintEvent(QPaintEvent *);
+    virtual void paintEvent(QPaintEvent *);   //实现白色背景 和 阴影效果
  private:
 
 };

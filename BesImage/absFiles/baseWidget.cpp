@@ -12,6 +12,7 @@ baseWidget::baseWidget(QWidget *parent) : QWidget(parent)
 }
 void baseWidget::paintEvent(QPaintEvent *e)
 {
+    Q_UNUSED(e)
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
@@ -25,8 +26,8 @@ void baseWidget::mousePressEvent(QMouseEvent *e)
 
 void baseWidget::mouseMoveEvent(QMouseEvent *e)
 {
-//    if(mainWindow::GetInstance())
-//       mainWindow::GetInstance()->mouseMoveEvent(e);
+    if(MainWindow::GetInstance())
+       MainWindow::GetInstance()->mouseMoveEvent(e);
     QWidget::mouseMoveEvent(e);
 }
 

@@ -17,8 +17,17 @@ MiddleWidget::MiddleWidget(QWidget *parent) : baseWidget(parent),
     initWidget();
     initAnimation();
 
-    connect(&pageSelect, SIGNAL(OnSelectPath(QString)), &pageShow, SLOT(SetImageForShow(QString)));
-    connect(&pageSelect, SIGNAL(OnSelectPath(QString)), this, SLOT(SwitchToShowPage()));
+    connect(&pageSelect, SIGNAL(OnSelectOnePath(QString)), &pageShow, SLOT(SetOneImageForShow(QString)));
+    connect(&pageSelect, SIGNAL(OnSelectOnePath(QString)), this, SLOT(SwitchToShowPage()));
+
+    connect(&pageSelect, SIGNAL(OnSelectBunchPath(QVector<QString>,int)), &pageShow, SLOT(SetBunchImageForShow(QVector<QString>,int)));
+    connect(&pageSelect, SIGNAL(OnSelectBunchPath(QVector<QString>,int)), this, SLOT(SwitchToShowPage()));
+
+    connect(&pageSelect, SIGNAL(OnSelectIndexInSet(int)), &pageShow, SLOT(ShowImageInSetShowing(int)));
+    connect(&pageSelect, SIGNAL(OnSelectIndexInSet(int)), this, SLOT(SwitchToShowPage()));
+
+
+
 }
 
 void MiddleWidget::initWidget()
@@ -120,3 +129,43 @@ void MiddleWidget::slot_changeButtonSelected(int index)
     }
     m_preItem=index;
 }
+
+void MiddleWidget::paintEvent(QPaintEvent *)
+{
+    QPainter p(this);
+    p.setPen(Qt::transparent);
+    p.setBrush(QColor(255,255,255,100));//刷透明区域
+    p.drawRect(-1,-1,width(),height()+1);
+    p.setPen(QColor(230,230,230));
+
+   if(m_isAnima)
+    {
+       if(m_isDrawVerticalLine)
+       p.drawLine(width()-1,0,width()-1,height());//vertical line
+
+        p.drawLine(0,m_btn[0]->y()+m_btn[0]->height()-1,m_x+(m_btn[0]->width()-m_pix.width())/2-1,m_btn[0]->y()+m_btn[0]->height()-1);//first line
+        p.drawLine(m_x+(m_btn[0]->width()-m_pix.width())/2+m_pix.width(),m_btn[0]->y()+m_btn[0]->height()-1,width(),m_btn[0]->y()+m_btn[0]->height()-1);//second line
+        p.drawPixmap(m_x+(m_btn[0]->width()-m_pix.width())/2,m_btn[0]->y()+m_btn[0]->height()-m_pix.height()+1,m_pix);
+    }
+    else
+    {
+       if(m_isDrawVerticalLine)
+       p.drawLine(width()-1,0,width()-1,height());
+
+       p.drawLine(0,m_btn[0]->y()+m_btn[0]->height()-1,m_index*m_btn[0]->width()+(m_btn[0]->width()-m_pix.width())/2-1,m_btn[0]->y()+m_btn[0]->height()-1);
+       p.drawLine(m_index*m_btn[0]->width()+(m_btn[0]->width()-m_pix.width())/2+m_pix.width(),m_btn[0]->y()+m_btn[0]->height()-1,width(),m_btn[0]->y()+m_btn[0]->height()-1);
+       p.drawPixmap(m_index*m_btn[0]->width()+(m_btn[0]->width()-m_pix.width())/2,m_btn[0]->y()+m_btn[0]->height()-m_pix.height()+1,m_pix);
+    }
+}
+
+int MiddleWidget::x() const
+{
+    return m_x;
+}
+
+void MiddleWidget::setX(int x)
+{
+    m_x = x;
+    update();
+}
+
