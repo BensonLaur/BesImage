@@ -20,5 +20,8 @@
         <file>image/toolbar/setting-hover.png</file>
         <file>image/toolbar/setting-normal.png</file>
         <file>image/toolbar/setting-press.png</file>
+        <file>image/toolbar/print-setting-hover.png</file>
+        <file>image/toolbar/print-setting-normal.png</file>
+        <file>image/toolbar/print-setting-press.png</file>
     </qresource>
 </RCC>

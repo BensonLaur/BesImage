@@ -1,6 +1,7 @@
 ﻿#ifndef TOOLBAR_WIDGET_H
 #define TOOLBAR_WIDGET_H
 
+#include "global.h"
 #include <QObject>
 #include <QWidget>
 #include "baseWidget.h"

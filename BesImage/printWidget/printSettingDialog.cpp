@@ -15,56 +15,25 @@ PrintSettingDialog::PrintSettingDialog(QWidget *parent) :
 
     setupUi(&m_mainwid);        //初始化UI 布局
 
-    restoreUiData();            //恢复载入界面数据
+    QDoubleValidator* validator = new QDoubleValidator(0,1,2,this);
+    lineEditLeftMargin->setValidator(validator);
+    lineEditTopMargin->setValidator(validator);
+    lineEditRightMargin->setValidator(validator);
+    lineEditBottomMargin->setValidator(validator);
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
+    connect(comboBoxPaperSize, SIGNAL(currentIndexChanged(int)), this, SLOT(curComboPaperSizeChange(int)));
+    connect(radioButtonPortrait, SIGNAL(toggled(bool)), this, SLOT(radioChanged()));
+
+    connect(lineEditLeftMargin,SIGNAL(textChanged(QString)),this,SLOT(marginLeftChanged(QString)));
+    connect(lineEditTopMargin,SIGNAL(textChanged(QString)),this,SLOT(marginTopChanged(QString)));
+    connect(lineEditRightMargin,SIGNAL(textChanged(QString)),this,SLOT(marginRightChanged(QString)));
+    connect(lineEditBottomMargin,SIGNAL(textChanged(QString)),this,SLOT(marginBottomChanged(QString)));
+
+    connect(checkboxKeepAspectRatio, SIGNAL(toggled(bool)), this, SLOT(checkboxChanged()));
 }
-
-void PrintSettingDialog::initWidget()
-{
-//    setMinimumSize(500,90);
-//    setMaximumSize(1920,90);
-//    setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
-
-//    QVBoxLayout *hmainyout=new QVBoxLayout;
-
-//    QHBoxLayout *hHeaderlyout=new QHBoxLayout;
-
-//    QHBoxLayout *hyout1=new QHBoxLayout;
-
-//    m_btnexit.setFixedSize(18,18);
-//    m_btnmini.setFixedSize(16,16);
-
-//    m_btnexit.setObjectName("m_btnexit");
-//    m_btnmini.setObjectName("m_btnmini");
-
-//    m_btnexit.setStyleSheet("QPushButton{border-image:url(:/image/topwidget/btn_close (1).png);}"
-//                             "QPushButton::hover{border-image:url(:/image/topwidget/btn_close (2).png);}"
-//                             "QPushButton::pressed{border-image:url(:/image/topwidget/btn_close (3).png);}");
-//    m_btnmini.setStyleSheet("QPushButton{border-image:url(:/image/topwidget/btn_mini (1).png);}"
-//                             "QPushButton::hover{border-image:url(:/image/topwidget/btn_mini (2).png);}"
-//                             "QPushButton::pressed{border-image:url(:/image/topwidget/btn_mini (3).png);}");
-
-//    hyout1->addWidget(&m_btnmini);
-//    hyout1->addWidget(&m_btnexit);
-//    hyout1->setSpacing(12);
-
-//   //hHeaderlyout->addSpacerItem(new QSpacerItem(80,30,QSizePolicy::Maximum));//设置它最大膨胀！！！
-//    hHeaderlyout->addSpacerItem(new QSpacerItem(110,50,QSizePolicy::Expanding));//膨胀
-//    hHeaderlyout->addLayout(hyout1);
-//    hHeaderlyout->setSpacing(0);
-//    hHeaderlyout->setContentsMargins(16,0,15,0);
-
-//    hmainyout->setSpacing(0);
-//    hmainyout->addLayout(hHeaderlyout);
-//    hmainyout->addWidget(&m_toolbar);
-//    hmainyout->setContentsMargins(0,0,0,0);
-
-//    setLayout(hmainyout);
-}
-
 
 
 void PrintSettingDialog::setupUi(QWidget *MainWindow)
@@ -283,6 +252,15 @@ void PrintSettingDialog::setupUi(QWidget *MainWindow)
 
     vLayoutMain->addLayout(hLayoutOrientAndMargins);
 
+    checkboxKeepAspectRatio = new QCheckBox(MainWindow);
+    checkboxKeepAspectRatio->setObjectName(QStringLiteral("checkboxKeepAspectRatio"));
+    checkboxKeepAspectRatio->setText(tr("保持图像原比例"));
+    checkboxKeepAspectRatio->setMinimumHeight(30);
+    QSizePolicy sizePolicyCheckbox(QSizePolicy::Minimum, QSizePolicy::Fixed);
+    sizePolicyCheckbox.setHorizontalStretch(0);
+    checkboxKeepAspectRatio->setSizePolicy(sizePolicyCheckbox);
+    vLayoutMain->addWidget(checkboxKeepAspectRatio);
+
     buttonBox = new QDialogButtonBox(MainWindow);
     buttonBox->setObjectName(QStringLiteral("buttonBox"));
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -307,9 +285,38 @@ void PrintSettingDialog::setupUi(QWidget *MainWindow)
 } // setupUi
 
 //恢复载入界面数据
-void PrintSettingDialog::restoreUiData()
-{
+void PrintSettingDialog::restoreUiData(PrintParameter param)
+{   
+    //恢复 comboBoxPaperSize 数据
+    comboBoxPaperSize->clear();
 
+    QVector<QPair<int, QString>> vecPaperSizePair
+                = PrintManager::GetInstance().GetPaperSizeEnumStringMap();
+
+    QStringList pageSizeList;
+    for(auto& pair: vecPaperSizePair)
+    {
+          pageSizeList << pair.second;
+    }
+
+    comboBoxPaperSize->addItems(pageSizeList);
+
+    comboBoxPaperSize->setCurrentIndex(param.pageSize);
+
+    //恢复 groupBoxOrientation 数据
+    if(param.orientation == QPrinter::Orientation::Landscape)
+        radioButtonLandscape->setChecked(true);
+    else
+        radioButtonPortrait->setChecked(true);
+
+    //恢复 margins 4 个文本数据
+    lineEditLeftMargin->setText(QString::number(param.margins.left));
+    lineEditTopMargin->setText(QString::number(param.margins.top));
+    lineEditRightMargin->setText(QString::number(param.margins.right));
+    lineEditBottomMargin->setText(QString::number(param.margins.bottom));
+
+    //保持比例checkbox
+    checkboxKeepAspectRatio->setChecked(param.keepAspectRatio);
 }
 
 void PrintSettingDialog::retranslateUi(QWidget *MainWindow)
@@ -326,3 +333,49 @@ void PrintSettingDialog::retranslateUi(QWidget *MainWindow)
     labelTopMargin->setText(QApplication::translate("MainWindow", "\344\270\212(&T):", Q_NULLPTR));
     labelBottomMargin->setText(QApplication::translate("MainWindow", "\344\270\213(&B):", Q_NULLPTR));
 } // retranslateUi
+
+
+
+void PrintSettingDialog::curComboPaperSizeChange(int index)
+{
+    QVector<QPair<int, QString>> vecPaperSizePair
+                = PrintManager::GetInstance().GetPaperSizeEnumStringMap();
+
+    if(index == -1 || index >= vecPaperSizePair.size())
+        return;
+
+    m_param.pageSize = index;
+}
+
+
+void PrintSettingDialog::radioChanged()
+{
+    m_param.orientation = radioButtonLandscape->isChecked() ?
+                QPrinter::Orientation::Landscape : QPrinter::Orientation::Portrait;
+}
+
+
+void PrintSettingDialog::marginLeftChanged(QString text)
+{
+    m_param.margins.left = text.toDouble();
+}
+
+void PrintSettingDialog::marginTopChanged(QString text)
+{
+    m_param.margins.top = text.toDouble();
+}
+
+void PrintSettingDialog::marginRightChanged(QString text)
+{
+    m_param.margins.right = text.toDouble();
+}
+
+void PrintSettingDialog::marginBottomChanged(QString text)
+{
+    m_param.margins.bottom = text.toDouble();
+}
+
+void PrintSettingDialog::checkboxChanged()
+{
+    m_param.keepAspectRatio = checkboxKeepAspectRatio->isChecked();
+}

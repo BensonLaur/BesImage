@@ -47,9 +47,15 @@ void toolbarWidget::initLayout()
     btnPrintPreview.setStyleSheet("QPushButton{border-image:url(:/image/toolbar/print-preview-normal.png)}"
                             "QPushButton:hover{border-image:url(:/image/toolbar/print-preview-hover.png)}"
                             "QPushButton:pressed{border-image:url(:/image/toolbar/print-preview-press.png)}");
-    btnSetting.setStyleSheet("QPushButton{border-image:url(:/image/toolbar/setting-normal.png)}"
-                            "QPushButton:hover{border-image:url(:/image/toolbar/setting-hover.png)}"
-                            "QPushButton:pressed{border-image:url(:/image/toolbar/setting-press.png)}");
+    btnSetting.setStyleSheet("QPushButton{border-image:url(:/image/toolbar/print-setting-normal.png)}"
+                            "QPushButton:hover{border-image:url(:/image/toolbar/print-setting-hover.png)}"
+                            "QPushButton:pressed{border-image:url(:/image/toolbar/print-setting-press.png)}");
+
+    btnReturn.setToolTip(tr("返回选择图片界面"));
+    btnPrintAll.setToolTip(tr("打印当前选中目录下所有文件"));
+    btnPrintOne.setToolTip(tr("打印当前查看文件"));
+    btnPrintPreview.setToolTip(tr("预览当前查看文件"));
+    btnSetting.setToolTip(tr("设置打印参数"));
 
     hyout1->addWidget(&btnSetting);
     hyout1->addWidget(&btnPrintPreview);

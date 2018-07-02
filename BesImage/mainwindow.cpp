@@ -84,8 +84,18 @@ void MainWindow::OnHeaderMouseDoubleClickEvent(QMouseEvent *e)
 
 void MainWindow::settingPrintParam()
 {
+    PrintParameter param;
+    bool bRet = PrintManager::GetInstance().GetPrintParameter(param);
+    if(!bRet)
+        return; //获取失败，中间已经报错，这里直接返回
+
     PrintSettingDialog dlg(this);
-    dlg.exec();
+    dlg.LoadParam(param);
+    if(dlg.exec() == QDialog::Accepted)
+    {
+        dlg.GetParam(param);
+        PrintManager::GetInstance().SetPrintParameter(param);
+    }
 }
 
 void MainWindow::previewCurrentImage()

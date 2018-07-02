@@ -9,6 +9,7 @@
 
 #include "baseDialog.h"
 #include"myPushButton.h"
+#include "printManager.h"
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -26,6 +27,7 @@
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QCheckBox>
 
 
 class PrintSettingDialog : public baseDialog
@@ -33,15 +35,34 @@ class PrintSettingDialog : public baseDialog
     Q_OBJECT
 public:
     explicit PrintSettingDialog(QWidget *parent = 0);
-    void initWidget();
 
     void setupUi(QWidget *MainWindow);          //设置界面布局
 
-    void restoreUiData();                       //恢复载入界面数据
+    void restoreUiData(PrintParameter param);   //恢复载入界面数据(使用外部LoadParam的数据)
 
     void retranslateUi(QWidget *MainWindow);
 
+    void LoadParam(const PrintParameter& param)
+    {
+        m_param = param;                 //第一次将数据保存，在restoreUiData 中初始化数据
+                                         //     会触发槽的执行中途改变 m_param，比如combobox构建中会触发2次选中时间，第一次是0
+        restoreUiData(param);            //恢复载入界面数据
+    }
+    void GetParam(PrintParameter& param)
+    {
+        param = m_param;
+    }
 
+public slots:
+    void curComboPaperSizeChange(int index);
+    void radioChanged();
+    void marginLeftChanged(QString text);
+    void marginTopChanged(QString text);
+    void marginRightChanged(QString text);
+    void marginBottomChanged(QString text);
+    void checkboxChanged();
+private:
+    PrintParameter m_param;
 
 public:
     QWidget *centralWidget;
@@ -73,6 +94,7 @@ public:
     QHBoxLayout *hLayoutMarginBottom;
     QLabel *labelBottomMargin;
     QLineEdit *lineEditBottomMargin;
+    QCheckBox *checkboxKeepAspectRatio;
     QDialogButtonBox *buttonBox;
 
 };
