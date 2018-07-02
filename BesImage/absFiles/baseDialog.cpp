@@ -1,4 +1,4 @@
-#include "baseDialog.h"
+﻿#include "baseDialog.h"
 #include<QGridLayout>
 
 baseDialog::baseDialog(QWidget *parent)
@@ -6,7 +6,7 @@ baseDialog::baseDialog(QWidget *parent)
     ,m_mainwid(this)
 {
     m_MousePressed=false;
-    setMinimumSize(550,440);
+    setMinimumSize(500,400);
     setWindowFlags(Qt::FramelessWindowHint|Qt::Tool|Qt::X11BypassWindowManagerHint); //setting windows tool bar icon invisiable
     setAttribute(Qt::WA_TranslucentBackground,true);
 

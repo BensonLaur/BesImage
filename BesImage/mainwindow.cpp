@@ -1,7 +1,10 @@
 ﻿#include "mainwindow.h"
+#include "baseDialog.h"
 #include <QtPrintSupport/QPrintPreviewDialog>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrinter>
+
+#include "printSettingDialog.h"
 
 MainWindow *MainWindow::s_pMainWnd=NULL;
 
@@ -32,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&topWidget.m_toolbar.btnPrintOne, SIGNAL(clicked(bool)),this, SLOT(printCurrentImage()));
     connect(&topWidget.m_toolbar.btnPrintAll, SIGNAL(clicked(bool)),this, SLOT(printCurrentDir()));
     connect(&topWidget.m_toolbar.btnPrintPreview, SIGNAL(clicked(bool)),this, SLOT(previewCurrentImage()));
+    connect(&topWidget.m_toolbar.btnSetting, SIGNAL(clicked(bool)),this, SLOT(settingPrintParam()));
 
 }
 
@@ -78,32 +82,36 @@ void MainWindow::OnHeaderMouseDoubleClickEvent(QMouseEvent *e)
 }
 
 
+void MainWindow::settingPrintParam()
+{
+    PrintSettingDialog dlg(this);
+    dlg.exec();
+}
 
 void MainWindow::previewCurrentImage()
 {
+    //获得当前展示图片
+    QPixmap pixmap;
+    midWidget.pageShow.imageScaler.GetCurrentPixMap(pixmap);
+
     // 打印预览
-
-   QPrinter printer;
-
-   //创建打印预览对话框
-   QPrintPreviewDialog preview(&printer, this);
-
-   // 当要生成预览页面时，发射paintRequested()信号
-   connect(&preview, SIGNAL(paintRequested(QPrinter*)),
-                 &midWidget.pageShow.imageScaler,SLOT(printPreviewSlot(QPrinter*)));
-
-   preview.exec();
-
+    PrintManager::GetInstance().PreviewPixmap(pixmap, this);
 }
 
 void MainWindow::printCurrentImage()
 {
-    midWidget.pageShow.imageScaler.printCurrentImage();
+    //获得当前展示图片
+    QPixmap pixmap;
+    midWidget.pageShow.imageScaler.GetCurrentPixMap(pixmap);
+
+    PrintManager::GetInstance().PrintOnePixmap(pixmap, this);
 }
 
 void MainWindow::printCurrentDir()
 {
-    midWidget.pageSelect.printLastSelectFiles();
+    QVector<QString> vecImgPath = midWidget.pageSelect.getLastSelectFiles();
+
+    PrintManager::GetInstance().PrintMultiPixmap(vecImgPath, this);
 }
 
 

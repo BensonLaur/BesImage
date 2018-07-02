@@ -144,34 +144,16 @@ void WidgetImageScaler::printPreviewSlot(QPrinter *printerPixmap)
     painterPixmap.end();
 }
 
-void WidgetImageScaler::printCurrentImage()
+//获得当前显示的pixmap
+bool WidgetImageScaler::GetCurrentPixMap(QPixmap& pixmap)
 {
     if(m_vecPixmap.size() == 0 || m_indexCurPixmap < 0 || m_indexCurPixmap >= m_vecPixmap.size())
-        return;
+        return false;
 
-    QPrinter* printerPixmap= new QPrinter();
-    QPixmap pixmap = m_vecPixmap[m_indexCurPixmap];
-
-
-    printerPixmap->setPageSize(QPagedPaintDevice::A4);
-    QPagedPaintDevice::Margins margins = QPagedPaintDevice::Margins{10,10,10,10};
-    printerPixmap->setMargins(margins);
-    printerPixmap->setOrientation(QPrinter::Portrait);
-    printerPixmap->setOrientation(QPrinter::Landscape);
-
-    QPrintDialog print(printerPixmap, this);
-    if (print.exec())
-    {
-       QPainter painterPixmap;
-       painterPixmap.begin(printerPixmap);
-       QRect rect = painterPixmap.viewport();
-       double x = 1.0 * rect.width() / pixmap.width();
-       double y = 1.0 * rect.height() / pixmap.height();
-       painterPixmap.scale(x, y);
-       painterPixmap.drawPixmap(0, 0, pixmap);
-       painterPixmap.end();
-    }
+    pixmap = m_vecPixmap[m_indexCurPixmap];
+    return true;
 }
+
 
 //查询当前是否有下一张图片
 bool WidgetImageScaler::HasNextImage()

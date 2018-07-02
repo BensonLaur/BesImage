@@ -31,6 +31,11 @@ include(topWidget/topwidget.pri)
 INCLUDEPATH +=$$PWD middleWidget
 include(middleWidget/middleWidget.pri)
 
+INCLUDEPATH +=$$PWD printWidget
+include(printWidget/printWidget.pri)
+
+
+
 SOURCES += main.cpp\
         mainwindow.cpp
 

@@ -17,5 +17,8 @@
         <file>image/toolbar/print-preview-hover.png</file>
         <file>image/toolbar/print-preview-normal.png</file>
         <file>image/toolbar/print-preview-press.png</file>
+        <file>image/toolbar/setting-hover.png</file>
+        <file>image/toolbar/setting-normal.png</file>
+        <file>image/toolbar/setting-press.png</file>
     </qresource>
 </RCC>

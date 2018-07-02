@@ -11,9 +11,8 @@
 #include <QPainter>
 #include "baseWidget.h"
 
-#include <QtPrintSupport/QPrintPreviewDialog>
-#include <QtPrintSupport/QPrintDialog>
-#include <QtPrintSupport/QPrinter>
+#include "printWidget/printManager.h"
+
 
 //参考 https://www.cnblogs.com/lifexy/p/9057046.html
 
@@ -52,7 +51,7 @@ public:
    bool HasNextImage();             //查询当前是否有下一张图片
    bool HasPreImage();              //查询当前是否有上一张图片
 
-   void printCurrentImage();        //
+   bool GetCurrentPixMap(QPixmap& pixmap);      //获得当前显示的pixmap
 
 public slots:
    bool ShowNextImage();            //显示下一张图片

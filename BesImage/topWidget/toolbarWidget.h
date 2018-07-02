@@ -26,6 +26,7 @@ public:
     myPushButton btnPrintAll;
     myPushButton btnPrintOne;
     myPushButton btnPrintPreview;
+    myPushButton btnSetting;
 };
 
 #endif // TOOLBAR_WIDGET_H

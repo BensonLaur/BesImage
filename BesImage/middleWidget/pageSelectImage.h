@@ -40,7 +40,7 @@ public:
 
     bool ScaleImageListOnce(bool bAdding);              //缩放列表一次， bAdding 表示是否增加大小
 
-    void printLastSelectFiles();                        //打印最后一次选择的图片
+    QVector<QString> getLastSelectFiles();                        //打印最后一次选择的图片
 
 protected:
     bool eventFilter(QObject *, QEvent *);

@@ -27,11 +27,13 @@ void toolbarWidget::initLayout()
     btnPrintAll.setFixedSize(50,50);
     btnPrintOne.setFixedSize(50,50);
     btnPrintPreview.setFixedSize(50,50);
+    btnSetting.setFixedSize(50,50);
 
     btnReturn.setObjectName("btnPrintOne");
     btnPrintAll.setObjectName("btnPrintAll");
     btnPrintOne.setObjectName("btnPrintOne");
     btnPrintPreview.setObjectName("btnPrintOne");
+    btnSetting.setObjectName("btnSetting");
 
     btnReturn.setStyleSheet("QPushButton{border-image:url(:/image/toolbar/btnReturn-normal.png)}"
                             "QPushButton:hover{border-image:url(:/image/toolbar/btnReturn-hover.png)}"
@@ -45,7 +47,11 @@ void toolbarWidget::initLayout()
     btnPrintPreview.setStyleSheet("QPushButton{border-image:url(:/image/toolbar/print-preview-normal.png)}"
                             "QPushButton:hover{border-image:url(:/image/toolbar/print-preview-hover.png)}"
                             "QPushButton:pressed{border-image:url(:/image/toolbar/print-preview-press.png)}");
+    btnSetting.setStyleSheet("QPushButton{border-image:url(:/image/toolbar/setting-normal.png)}"
+                            "QPushButton:hover{border-image:url(:/image/toolbar/setting-hover.png)}"
+                            "QPushButton:pressed{border-image:url(:/image/toolbar/setting-press.png)}");
 
+    hyout1->addWidget(&btnSetting);
     hyout1->addWidget(&btnPrintPreview);
     hyout1->addWidget(&btnPrintOne);
     hyout1->addWidget(&btnPrintAll);

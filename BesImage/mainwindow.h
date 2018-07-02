@@ -42,9 +42,10 @@ private:
 public slots:
     void OnHeaderMouseDoubleClickEvent(QMouseEvent *e);
 
-    void previewCurrentImage();
-    void printCurrentImage();
-    void printCurrentDir();
+    void settingPrintParam();           //设置打印参数
+    void previewCurrentImage();         //预览当前图片
+    void printCurrentImage();           //打印当前图片
+    void printCurrentDir();             //打印整个目录的图片
 
 private:
     TopWidgets topWidget;

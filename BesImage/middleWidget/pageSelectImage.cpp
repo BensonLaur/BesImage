@@ -228,57 +228,9 @@ bool PageSelectImage::ScaleImageListOnce(bool bAdding)   //缩放列表一次，
 }
 
  //打印最后一次选择的图片
-void PageSelectImage::printLastSelectFiles()
+QVector<QString> PageSelectImage::getLastSelectFiles()
 {
-    if(vecLastFilePath.size() == 0)
-        return;
-
-    QPrinter* printer= new QPrinter();
-
-    printer->setPageSize(QPagedPaintDevice::A4);
-    QPagedPaintDevice::Margins margins = QPagedPaintDevice::Margins{10,10,10,10};
-    printer->setMargins(margins);
-    printer->setOrientation(QPrinter::Portrait);
-    printer->setOrientation(QPrinter::Landscape);
-
-    QPixmap img;
-
-    QPrintDialog* printDialog = new QPrintDialog(printer, this);
-    //printDialog->resize(400, 300);
-    //m_printDialogVisible = true;
-
-    if (printDialog->exec() == QDialog::Accepted) {
-        QPainter painter(printer);
-        for(auto i = vecLastFilePath.begin(); i!= vecLastFilePath.end(); ++i){
-            if (!img.load(*i)) {
-                qDebug() << "img load failed" << *i;
-                continue;
-            }
-            if (img.width() > img.height())
-                printer->setPageOrientation(QPageLayout::Landscape);
-            else
-                printer->setPageOrientation(QPageLayout::Portrait);
-            QRect pageOriginRect = printer->pageRect();
-            QSize pageRect = QSize(pageOriginRect.width() - 8,
-                                   pageOriginRect.height() - 8);
-            img = img.scaled(pageRect, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-            painter.drawPixmap(0, 0, img);
-            if (i != vecLastFilePath.end() - 1)
-                printer->newPage();
-        }
-        painter.end();
-        qDebug() << "print succeed!";
-        return;
-    }
-
-
-    QObject::connect(printDialog, &QPrintDialog::finished,  this, [=]{
-        printDialog->deleteLater();
-        //m_printDialogVisible =  false;
-    });
-
-    qDebug() << "print failed!";
+    return vecLastFilePath;
 }
 
 
