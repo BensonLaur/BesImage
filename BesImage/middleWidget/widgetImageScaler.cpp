@@ -346,7 +346,7 @@ void WidgetImageScaler::paintEvent(QPaintEvent *event)
 
        /*显示比例*/
        QString str;
-       str.sprintf("%.0f%",ratio*100);
+       str.sprintf("%.0f%%",ratio*100);
        label.setText(str) ;
    }
    else  if(action==Type::Shrink)           //放大
@@ -358,7 +358,7 @@ void WidgetImageScaler::paintEvent(QPaintEvent *event)
 
        /*显示比例*/
        QString str;
-       str.sprintf("%.0f%",ratio*100);
+       str.sprintf("%.0f%%",ratio*100);
        label.setText(str);
    }
    if(action==Type::Amplification || action==Type::Shrink)      //更新图片

@@ -56,6 +56,7 @@ public:
     int m_x;
     int m_preItem;
 
+private:
     QPropertyAnimation m_animation;
     QPropertyAnimation m_Widanimation;
 };

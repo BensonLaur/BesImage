@@ -8,11 +8,11 @@
 
 
 MiddleWidget::MiddleWidget(QWidget *parent) : baseWidget(parent),
+    mHeaderButtonHeight(0),
     pageSelect(this),
     pageShow(this),
     m_animation(this,"m_x"),
     m_Widanimation(this,"geometry")
-    ,mHeaderButtonHeight(0)
 {
 
     initWidget();
