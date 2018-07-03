@@ -17,10 +17,6 @@
 #include <QFileIconProvider>
 #include <QHBoxLayout>
 
-#include <QPainter>
-#include <QtPrintSupport/QPrintPreviewDialog>
-#include <QtPrintSupport/QPrintDialog>
-#include <QtPrintSupport/QPrinter>
 
 class PageSelectImage : public baseWidget
 {
@@ -40,7 +36,9 @@ public:
 
     bool ScaleImageListOnce(bool bAdding);              //缩放列表一次， bAdding 表示是否增加大小
 
-    QVector<QString> getLastSelectFiles();                        //打印最后一次选择的图片
+    QVector<QString> getLastSelectFiles();              //打印最后一次选择的图片
+
+    bool isCurrentSelectFileSetEmpty();                 //当前选中的文件集合是否为空
 
 protected:
     bool eventFilter(QObject *, QEvent *);

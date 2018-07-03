@@ -233,6 +233,11 @@ QVector<QString> PageSelectImage::getLastSelectFiles()
     return vecLastFilePath;
 }
 
+//当前选中的文件集合是否为空
+bool PageSelectImage::isCurrentSelectFileSetEmpty()
+{
+    return vecLastFilePath.empty();
+}
 
 void PageSelectImage::showImgUnderTreeItem(const QModelIndex &index)
 {

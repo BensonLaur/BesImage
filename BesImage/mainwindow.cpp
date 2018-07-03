@@ -1,8 +1,5 @@
 ﻿#include "mainwindow.h"
 #include "baseDialog.h"
-#include <QtPrintSupport/QPrintPreviewDialog>
-#include <QtPrintSupport/QPrintDialog>
-#include <QtPrintSupport/QPrinter>
 
 #include "printSettingDialog.h"
 
@@ -28,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     //程序头
     connect(&topWidget.m_btnmini,SIGNAL(clicked(bool)),SLOT(showMinimized()));
     connect(&topWidget.m_btnexit,SIGNAL(clicked(bool)),SLOT(close()));
-    connect(&topWidget, SIGNAL(OnHeaderMouseDoubleClickEvent(QMouseEvent*)),this,SLOT(OnHeaderMouseDoubleClickEvent(QMouseEvent*)));
+    connect(&topWidget, SIGNAL(OnHeaderMouseDoubleClickEvent(QMouseEvent*)),this,SLOT(OnWindowHeaderDbClick(QMouseEvent*)));
 
     //工具栏
     connect(&topWidget.m_toolbar.btnReturn, SIGNAL(clicked(bool)), &midWidget,SLOT(returnToSelect()));
@@ -37,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&topWidget.m_toolbar.btnPrintPreview, SIGNAL(clicked(bool)),this, SLOT(previewCurrentImage()));
     connect(&topWidget.m_toolbar.btnSetting, SIGNAL(clicked(bool)),this, SLOT(settingPrintParam()));
 
+    connect(&midWidget.m_stackwid,SIGNAL(currentChanged(int)),this,SLOT(pageChanged(int)));
 }
 
 MainWindow::~MainWindow()
@@ -52,8 +50,9 @@ void MainWindow::initUI()
     vlyout->addWidget(&midWidget);
     vlyout->setSpacing(0);
 
-
     m_mainwid.setLayout(vlyout);
+
+    pageChanged(0);                     //启用禁用页面1时的工具按钮
 
     setCurBGPic(":/image/skin/default.jpg");
 }
@@ -69,7 +68,7 @@ inline void MainWindow::setCurBGPic(const QString&strPic)
    m_mainwid.setCurBGPic(strPic);
 }
 
-void MainWindow::OnHeaderMouseDoubleClickEvent(QMouseEvent *e)
+void MainWindow::OnWindowHeaderDbClick(QMouseEvent *e)
 {
     Q_UNUSED(e)
     if(!isMaximized())
@@ -122,6 +121,37 @@ void MainWindow::printCurrentDir()
     QVector<QString> vecImgPath = midWidget.pageSelect.getLastSelectFiles();
 
     PrintManager::GetInstance().PrintMultiPixmap(vecImgPath, this);
+}
+
+//页面发生改变
+void MainWindow::pageChanged(int index)
+{
+    //不同的页面启用不同的工具栏按钮
+    if(index == 0)
+    {
+        topWidget.m_toolbar.btnReturn.setEnabled(false);
+        topWidget.m_toolbar.btnPrintOne.setEnabled(false);
+
+        if(midWidget.pageSelect.isCurrentSelectFileSetEmpty())
+            topWidget.m_toolbar.btnPrintAll.setEnabled(false);
+        else
+            topWidget.m_toolbar.btnPrintAll.setEnabled(true);
+
+        topWidget.m_toolbar.btnPrintPreview.setEnabled(false);
+        topWidget.m_toolbar.btnSetting.setEnabled(true);
+    }
+    else if(index == 1)
+    {
+
+        topWidget.m_toolbar.btnReturn.setEnabled(true);
+        topWidget.m_toolbar.btnPrintOne.setEnabled(true);
+
+        topWidget.m_toolbar.btnPrintAll.setEnabled(false);
+
+        topWidget.m_toolbar.btnPrintPreview.setEnabled(true);
+        topWidget.m_toolbar.btnSetting.setEnabled(true);
+    }
+
 }
 
 

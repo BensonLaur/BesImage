@@ -398,24 +398,14 @@ bool PrintManager::LoadPrintSetting()
         // 读取下一个元素
         QXmlStreamReader::TokenType nType = reader.readNext();
 
-        switch (nType) {
-        case QXmlStreamReader::StartDocument: break;            // 开始文档
-        case QXmlStreamReader::Comment: break;                  // 注释
-        case QXmlStreamReader::ProcessingInstruction: break;    // 处理指令
-        case QXmlStreamReader::DTD: break;                      // DTD
-        case QXmlStreamReader::StartElement:                    // 开始文档
-
+        if (nType == QXmlStreamReader::StartElement)
+        {
             strElementName = reader.name().toString();
             if (QString::compare(strElementName, "printConfig") == 0) // 根元素
             {
                 parseConfig(reader, param);  //解析 printConfig
             }
-
-            break;
-        case QXmlStreamReader::EndDocument: break;             // 开始文档
-
         }
-
     }
 
     if (reader.hasError()) {  // 解析出错

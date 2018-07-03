@@ -28,7 +28,7 @@ public:
 
 private slots:
     void slot_btn();
-    void slot_changeButtonSelected(int i);//改变选中图片
+    void pageChanged(int i);//改变选中页面
     void slot_finished()
     {
         m_isAnima=false;

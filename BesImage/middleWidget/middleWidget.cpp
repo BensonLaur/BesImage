@@ -64,7 +64,7 @@ void MiddleWidget::initWidget()
         connect(m_btn[i],SIGNAL(pressed()),this,SLOT(slot_btn()));
     }
 
-    connect(&m_stackwid,SIGNAL(currentChanged(int)),this,SLOT(slot_changeButtonSelected(int)));
+    connect(&m_stackwid,SIGNAL(currentChanged(int)),this,SLOT(pageChanged(int)));
 
     m_stackwid.setCurrentIndex(0);//选中第一个stackwidget
     m_btn[0]->setselected(true);
@@ -94,7 +94,7 @@ void MiddleWidget::slot_btn()
     m_stackwid.setCurrentIndex(sender()->objectName().toInt());
 }
 
-void MiddleWidget::slot_changeButtonSelected(int index)
+void MiddleWidget::pageChanged(int index)
 {
     m_isAnima=true;
     m_index=index;
