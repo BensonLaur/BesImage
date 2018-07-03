@@ -5,6 +5,7 @@
 #include "absFiles/basewindow.h"
 #include "topWidget/topwidgets.h"
 #include "middleWidget/middleWidget.h"
+#include "appConfig.h"
 
 class MainWindow : public baseWindow
 {
@@ -15,7 +16,7 @@ public:
     //实现单例模式访问
     static MainWindow *GetInstance();
 
-    ~MainWindow();
+    ~MainWindow(){}
 
 private:
     static MainWindow *s_pMainWnd;
@@ -24,6 +25,7 @@ private:
 
 private:
     void initUI();                      //初始化UI
+    void ApplyAppConfig();              //应用配置
 
     void clearBackground();
 
@@ -39,6 +41,10 @@ public slots:
     void printCurrentDir();             //打印整个目录的图片
 
     void pageChanged(int index);        //页面发生改变
+
+    void UpdateToolbarOnFilesSelectedChanged();  //在选中树发生改变后 更新工具栏
+
+    void ShowBtnBackToParent(bool);      //显示回到显示父目录的状态的按钮
 private:
     TopWidgets topWidget;               //窗口上部控件
     MiddleWidget midWidget;             //窗口中间控件

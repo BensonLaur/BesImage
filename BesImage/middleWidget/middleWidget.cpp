@@ -5,7 +5,7 @@
 #include<QDebug>
 #include<QFile>
 #include<QApplication>
-
+#include<appConfig.h>
 
 MiddleWidget::MiddleWidget(QWidget *parent) : baseWidget(parent),
     mHeaderButtonHeight(0),
@@ -26,8 +26,6 @@ MiddleWidget::MiddleWidget(QWidget *parent) : baseWidget(parent),
 
     connect(&pageSelect, SIGNAL(OnSelectIndexInSet(int)), &pageShow, SLOT(ShowImageInSetShowing(int)));
     connect(&pageSelect, SIGNAL(OnSelectIndexInSet(int)), this, SLOT(SwitchToShowPage()));
-
-
 
 }
 
@@ -113,6 +111,11 @@ void MiddleWidget::pageChanged(int index)
           m_btn[i]->setselected(false);
         }
     }
+
+    if(AppConfig::GetInstance().IsValidOnlyShowOneImage())
+        return;  //配置只显示一个图像时，不动画切换，一是不希望动画；
+                 // 二是动画导致控件大小初始未完成 就动画,动画窗口大小不准确（可能是geometry未能及时
+                 //     在其layout里更新就拿来动画了）
 
     if(index>m_preItem)
     {

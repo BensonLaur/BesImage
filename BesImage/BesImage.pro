@@ -37,10 +37,12 @@ include(printWidget/printWidget.pri)
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    appConfig.cpp
 
 HEADERS  += mainwindow.h \
-    global.h
+    global.h \
+    appConfig.h
 
 DISTFILES +=
 

@@ -23,5 +23,11 @@
         <file>image/toolbar/print-setting-hover.png</file>
         <file>image/toolbar/print-setting-normal.png</file>
         <file>image/toolbar/print-setting-press.png</file>
+        <file>image/main/besimage.ico</file>
+        <file>image/main/besimage-black.ico</file>
+        <file>image/main/besimage-white.ico</file>
+        <file>image/toolbar/back_hover.png</file>
+        <file>image/toolbar/back_normal.png</file>
+        <file>image/toolbar/back_press.png</file>
     </qresource>
 </RCC>

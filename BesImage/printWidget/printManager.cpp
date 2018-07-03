@@ -316,7 +316,7 @@ void PrintManager::PrintMultiPixmap(const QVector<QPixmap>& vecPixmap, QWidget *
         return;
    }
 
-    QObject::connect(printDialog, &QPrintDialog::finished,  this, [=]{
+    QObject::connect(printDialog, &QPrintDialog::finished,  this, [=](){
         printDialog->deleteLater();
         //m_printDialogVisible =  false;
     });

@@ -28,6 +28,7 @@ public:
     myPushButton btnPrintOne;
     myPushButton btnPrintPreview;
     myPushButton btnSetting;
+    myPushButton btnBackParent;     //从选中单个文件状态回到选中父目录状态
 };
 
 #endif // TOOLBAR_WIDGET_H

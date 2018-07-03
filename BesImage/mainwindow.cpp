@@ -35,11 +35,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&topWidget.m_toolbar.btnSetting, SIGNAL(clicked(bool)),this, SLOT(settingPrintParam()));
 
     connect(&midWidget.m_stackwid,SIGNAL(currentChanged(int)),this,SLOT(pageChanged(int)));
-}
 
-MainWindow::~MainWindow()
-{
+    connect(&midWidget.pageSelect,SIGNAL(OnFilesSelectedChanged()),
+                                    this,SLOT(UpdateToolbarOnFilesSelectedChanged()));
+    connect(&midWidget.pageSelect,SIGNAL(OnSelectSingleFileInTree(bool)), this,
+                                    SLOT(ShowBtnBackToParent(bool)));
 
+    connect(&topWidget.m_toolbar.btnBackParent, SIGNAL(clicked(bool)),
+                    &midWidget.pageSelect, SLOT(selectParentOfLastItem()));
+
+    //根据AppConfig 配置程序
+    ApplyAppConfig();
 }
 
 //初始化UI
@@ -57,15 +63,55 @@ void MainWindow::initUI()
     setCurBGPic(":/image/skin/default.jpg");
 }
 
+void MainWindow::ApplyAppConfig()
+{
+    AppConfigParameter param;
+    AppConfig::GetInstance().GetAppParameter(param);
+    //AppConfig::GetInstance().SetAppParameter(param);
+
+    /* 先使用程序的默认设置项来设置程序 */
+
+    //设置背景图片
+    setCurBGPic(param.defaultBackgroundPath);
+
+    //设置标题、黑白2个风格图标，然后设置使用黑
+    topWidget.SetIcon(param.besimageBlackIcon, param.besimageWhiteIcon);
+    topWidget.SetColorBlackOrWhite(param.isWindowHeaderColorBlack);
+
+
+    /* 使用有效的用户配置项来定义程序 */
+    topWidget.SetTitle(param.appTitle);
+    midWidget.pageSelect.SetFileTreeRootPath(param.initPath);
+
+    if(AppConfig::GetInstance().IsValidOnlyShowOneImage())
+    {
+        //不显示返回按钮
+         topWidget.m_toolbar.btnReturn.setVisible(false);
+
+         //其他逻辑，在 上面 midWidget.pageSelect.SetFileTreeRootPath(param.initPath); 之后
+         //    首先触发 showImgUnderTreeItem(rootIndex);
+         //        然后 其中 LoadFloder(path); 载入列表时
+         //             判断单个文件时，是IsValidOnlyShowOneImage ，则emit(OnSelectOnePath(path));
+         //                 从而触发相关信号自动改变部分控件
+    }
+}
 
 void MainWindow::clearBackground()
 {
     m_mainwid.clearBg();
 }
 
-inline void MainWindow::setCurBGPic(const QString&strPic)
+inline void MainWindow::setCurBGPic(const QString& path)
 {
-   m_mainwid.setCurBGPic(strPic);
+    //使用相对路径尝试构建出有效路径，如果无法构建出存在的文件路径，使用系统默认资源
+    QString imagePath;
+
+    if(QFile::exists(path))
+        imagePath = path;
+    else if(QFile::exists(QCoreApplication::applicationDirPath() +"/"+ path))
+        imagePath = QCoreApplication::applicationDirPath() +"/"+ path;
+
+   m_mainwid.setCurBGPic(imagePath);
 }
 
 void MainWindow::OnWindowHeaderDbClick(QMouseEvent *e)
@@ -129,30 +175,40 @@ void MainWindow::pageChanged(int index)
     //不同的页面启用不同的工具栏按钮
     if(index == 0)
     {
-        topWidget.m_toolbar.btnReturn.setEnabled(false);
-        topWidget.m_toolbar.btnPrintOne.setEnabled(false);
+        topWidget.m_toolbar.btnReturn.setVisible(false);
+        topWidget.m_toolbar.btnPrintOne.setVisible(false);
 
         if(midWidget.pageSelect.isCurrentSelectFileSetEmpty())
-            topWidget.m_toolbar.btnPrintAll.setEnabled(false);
+            topWidget.m_toolbar.btnPrintAll.setVisible(false);
         else
-            topWidget.m_toolbar.btnPrintAll.setEnabled(true);
+            topWidget.m_toolbar.btnPrintAll.setVisible(true);
 
-        topWidget.m_toolbar.btnPrintPreview.setEnabled(false);
-        topWidget.m_toolbar.btnSetting.setEnabled(true);
+        topWidget.m_toolbar.btnPrintPreview.setVisible(false);
+        topWidget.m_toolbar.btnSetting.setVisible(true);
     }
     else if(index == 1)
     {
+        topWidget.m_toolbar.btnReturn.setVisible(true);
+        topWidget.m_toolbar.btnPrintOne.setVisible(true);
 
-        topWidget.m_toolbar.btnReturn.setEnabled(true);
-        topWidget.m_toolbar.btnPrintOne.setEnabled(true);
+        topWidget.m_toolbar.btnPrintAll.setVisible(false);
 
-        topWidget.m_toolbar.btnPrintAll.setEnabled(false);
-
-        topWidget.m_toolbar.btnPrintPreview.setEnabled(true);
-        topWidget.m_toolbar.btnSetting.setEnabled(true);
+        topWidget.m_toolbar.btnPrintPreview.setVisible(true);
+        topWidget.m_toolbar.btnSetting.setVisible(true);
     }
-
 }
 
+//在选中树发生改变后 更新工具栏
+void MainWindow::UpdateToolbarOnFilesSelectedChanged()
+{
+    if(midWidget.pageSelect.isCurrentSelectFileSetEmpty())
+        topWidget.m_toolbar.btnPrintAll.setVisible(false);
+    else
+        topWidget.m_toolbar.btnPrintAll.setVisible(true);
+}
 
-
+//显示回到显示父目录的状态的按钮
+void MainWindow::ShowBtnBackToParent(bool bIsSingleFile)
+{
+     topWidget.m_toolbar.btnBackParent.setVisible(bIsSingleFile);
+}

@@ -76,7 +76,7 @@ private:
     //解析config
     void parseConfig(QXmlStreamReader &reader, PrintParameter &param);
 
-    //解析config
+    //解析margins
     void parseMargins(QXmlStreamReader &reader, PrintParameter &param);
 
     //保存到打印参数

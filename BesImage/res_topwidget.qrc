@@ -44,5 +44,11 @@
         <file>image/topwidget/btn_search (1).png</file>
         <file>image/topwidget/btn_search (2).png</file>
         <file>image/topwidget/btn_search (3).png</file>
+        <file>image/topwidget/btn_close_black(2).png</file>
+        <file>image/topwidget/btn_close_black(3).png</file>
+        <file>image/topwidget/btn_close_black(1).png</file>
+        <file>image/topwidget/btn_mini_black(1).png</file>
+        <file>image/topwidget/btn_mini_black(2).png</file>
+        <file>image/topwidget/btn_mini_black(3).png</file>
     </qresource>
 </RCC>

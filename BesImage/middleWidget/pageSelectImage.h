@@ -40,6 +40,8 @@ public:
 
     bool isCurrentSelectFileSetEmpty();                 //当前选中的文件集合是否为空
 
+    void SetFileTreeRootPath(QString rootPath);         //设置文件树的根目录
+
 protected:
     bool eventFilter(QObject *, QEvent *);
 
@@ -53,16 +55,24 @@ public Q_SLOTS:
 
     void OnClickImgItem(const QModelIndex &index);
 
+    void selectParentOfLastItem();                          //选中最后项的父项
+
  signals:
+    void OnSelectSingleFileInTree(bool);                                    //只选中了单个文件
+    void OnFilesSelectedChanged();                                      //选择的树项发生改变
     void OnSelectOnePath(QString imagePath);                            //选中一个显示的路径
     void OnSelectBunchPath(QVector<QString> vecImagePath, int curSel);  //选中整个路径集合
     void OnSelectIndexInSet(int curSel);                                //选中集合中的某个下标
+
+
 
 private:
     QTreeView fileTree;             //文件树
     QListWidget imageList;          //缩略图标
     myPushButton m_btnhidelist;     //隐藏列表
 
+    QDirModel       *dirModel;      //文件树model
+    QModelIndex     modelIndexLast; //最后选中的项
 private:
 
     QStringList  listSuffixFilters;         //文件后缀列表，形如"png"

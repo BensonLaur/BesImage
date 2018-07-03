@@ -6,6 +6,7 @@ toolbarWidget::toolbarWidget(QWidget*p)
     ,btnPrintAll(this)
     ,btnPrintOne(this)
     ,btnPrintPreview(this)
+    ,btnBackParent(this)
 {
     setMouseTracking(true);
     setStyleSheet("QWidget{background:black;}");
@@ -21,6 +22,18 @@ void toolbarWidget::initLayout()
 
     QHBoxLayout *hmainyout=new QHBoxLayout;
 
+    QHBoxLayout *hyoutLeft=new QHBoxLayout;
+
+    btnBackParent.setFixedSize(50,50);
+    btnBackParent.setObjectName("btnBackParent");
+    btnBackParent.setStyleSheet("QPushButton{border-image:url(:/image/toolbar/back_normal.png)}"
+                            "QPushButton:hover{border-image:url(:/image/toolbar/back_hover.png)}"
+                            "QPushButton:pressed{border-image:url(:/image/toolbar/back_press.png)}");
+
+    btnBackParent.setToolTip(tr("从 “选中单个文件状态” 回到 “选中父目录状态”"));
+
+    hyoutLeft->addWidget(&btnBackParent);
+
     QHBoxLayout *hyout1=new QHBoxLayout;
 
     btnReturn.setFixedSize(50,50);
@@ -33,7 +46,6 @@ void toolbarWidget::initLayout()
     btnPrintAll.setObjectName("btnPrintAll");
     btnPrintOne.setObjectName("btnPrintOne");
     btnPrintPreview.setObjectName("btnPrintOne");
-    btnSetting.setObjectName("btnSetting");
 
     btnReturn.setStyleSheet("QPushButton{border-image:url(:/image/toolbar/btnReturn-normal.png)}"
                             "QPushButton:hover{border-image:url(:/image/toolbar/btnReturn-hover.png)}"
@@ -64,6 +76,7 @@ void toolbarWidget::initLayout()
     hyout1->addWidget(&btnReturn);
     hyout1->setSpacing(0);
 
+    hmainyout->addLayout(hyoutLeft);
     hmainyout->addSpacerItem(new QSpacerItem(110,50,QSizePolicy::Expanding));//膨胀
     hmainyout->addLayout(hyout1);
     hmainyout->setSpacing(0);

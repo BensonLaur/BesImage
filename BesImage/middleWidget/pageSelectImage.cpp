@@ -1,6 +1,7 @@
 ﻿#include "pageSelectImage.h"
 #include <QImageReader>
 #include <QDebug>
+#include "appConfig.h"
 
 PageSelectImage::PageSelectImage(QWidget *parent) : baseWidget(parent),
   fileTree(this),
@@ -59,22 +60,22 @@ void PageSelectImage::initWidget()
 {
     /*初始化fileTree */
     //创建目录 model
-    QDirModel *model = new QDirModel(this);
-    model->setFilter(QDir::AllDirs|QDir::NoDotAndDotDot|QDir::Files);
+    dirModel = new QDirModel(this);
+    dirModel->setFilter(QDir::AllDirs|QDir::NoDotAndDotDot|QDir::Files);
 
     QStringList nameFilters;
     for(auto suffix: listSuffixFilters)
     {
         nameFilters << "*."+suffix;
     }
-    model->setNameFilters(nameFilters);
+    dirModel->setNameFilters(nameFilters);
 
-    model->iconProvider()->setOptions(QFileIconProvider::DontUseCustomDirectoryIcons);
+    dirModel->iconProvider()->setOptions(QFileIconProvider::DontUseCustomDirectoryIcons);
 
-    fileTree.setModel(model);
+    fileTree.setModel(dirModel);
     QString rootPath = "";//"C:/Users/Benso/"; //="";
     if (!rootPath.isEmpty()) {
-        const QModelIndex rootIndex = model->index(QDir::cleanPath(rootPath));
+        const QModelIndex rootIndex = dirModel->index(QDir::cleanPath(rootPath));
         if (rootIndex.isValid())
             fileTree.setRootIndex(rootIndex);
     }
@@ -82,12 +83,13 @@ void PageSelectImage::initWidget()
     // Demonstrating look and feel features
     fileTree.setAnimated(true);
     fileTree.setIndentation(15);
-    fileTree.setSortingEnabled(true);
-    fileTree.setColumnWidth(0, 300);
+    fileTree.setSortingEnabled(false);
+    fileTree.setColumnWidth(0, 260);
     fileTree.setColumnHidden(1, true);
     fileTree.setColumnHidden(2, true);
     fileTree.setColumnHidden(3, true);
     fileTree.setWindowTitle(QObject::tr("Dir View"));
+    fileTree.setHeaderHidden(true);
 
     QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     sizePolicy.setHorizontalStretch(0);
@@ -147,18 +149,17 @@ void PageSelectImage::setlistHideStyle()
  //载入文件夹/文件
 bool PageSelectImage::LoadFloder(QString path)
 {
-    bool bIsFloder = QDir().exists(path);
-    bool bIsFile = QFile().exists(path);
+    QFileInfo fi(path);
 
     //先确认路径是否有效
-    if(!bIsFloder && !bIsFile)
+    if(!fi.isFile() && !fi.isDir())
     {
         return false;
     }
 
     QVector<QString> vecFilePath;
 
-    if(bIsFloder)
+    if(fi.isDir())
     {
         //一级目录下寻找 souisrc 文件载入
         QDir dir(path);
@@ -171,12 +172,30 @@ bool PageSelectImage::LoadFloder(QString path)
            if(listSuffixFilters.contains(suffix))
                vecFilePath.push_back(finfo.absoluteFilePath());
         }
-    }
 
-    if(bIsFile)
+         emit(OnSelectSingleFileInTree(false)); //取消其显示
+    }
+    else if(fi.isFile())
+    {
         vecFilePath.push_back(path);
 
+        if( AppConfig::GetInstance().IsValidOnlyShowOneImage())
+        {
+            emit(OnSelectSingleFileInTree(false)); //只显示一张图片的模式时不显示返回父目录按钮
+
+            //直接选中当前文件，自动切换到显示图片页面
+            emit(OnSelectOnePath(path));
+
+            return true;  //随便返回一个值（因为这个显示模式不用处理返回）
+        }
+        else
+            //此时为展示一个图片，为了能够返回选中整个父目录（在根目录为父目录时无法直接做到），发送信号
+            emit(OnSelectSingleFileInTree(true));
+    }
+
     vecLastFilePath = vecFilePath;
+
+    emit(OnFilesSelectedChanged()); //选中的项发生改变
 
     imageList.clear();
     for(auto tmp : vecFilePath)
@@ -239,8 +258,23 @@ bool PageSelectImage::isCurrentSelectFileSetEmpty()
     return vecLastFilePath.empty();
 }
 
+//设置文件树的根目录
+void PageSelectImage::SetFileTreeRootPath(QString rootPath)
+{
+    if (!rootPath.isEmpty()) {
+        const QModelIndex rootIndex = dirModel->index(QDir::cleanPath(rootPath));
+        if (rootIndex.isValid()){
+            fileTree.setRootIndex(rootIndex);
+
+            showImgUnderTreeItem(rootIndex);
+        }
+    }
+}
+
 void PageSelectImage::showImgUnderTreeItem(const QModelIndex &index)
 {
+    modelIndexLast = index;  //保存最后选中的modelIndex
+
     QString path = index.data().toString();
     QModelIndex ParentIndex = index.parent();
     while(ParentIndex.isValid())
@@ -248,6 +282,7 @@ void PageSelectImage::showImgUnderTreeItem(const QModelIndex &index)
         path = ParentIndex.data().toString() + "\\" + path;
         ParentIndex = ParentIndex.parent();
     }
+
     LoadFloder(path);
 }
 
@@ -300,4 +335,11 @@ void PageSelectImage::OnClickImgItem(const QModelIndex &index)
     }
     else
         emit( OnSelectIndexInSet(curSel));      //发送显示的图像下标即可
+}
+
+ //选中最后项的父项
+void PageSelectImage::selectParentOfLastItem()
+{
+    fileTree.setCurrentIndex(modelIndexLast.parent());
+    showImgUnderTreeItem(modelIndexLast.parent());
 }
