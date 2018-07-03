@@ -1,6 +1,7 @@
 ﻿#ifndef PRINTMANAGER_H
 #define PRINTMANAGER_H
 
+#include "global.h"
 #include <QDebug>
 #include <QObject>
 #include <QPainter>

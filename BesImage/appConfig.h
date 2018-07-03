@@ -1,6 +1,7 @@
 ﻿#ifndef APPCONFIG_H
 #define APPCONFIG_H
 
+#include "global.h"
 #include <QDebug>
 #include <QObject>
 #include <QCoreApplication>

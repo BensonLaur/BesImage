@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(&midWidget.pageSelect,SIGNAL(OnFilesSelectedChanged()),
                                     this,SLOT(UpdateToolbarOnFilesSelectedChanged()));
-    connect(&midWidget.pageSelect,SIGNAL(OnSelectSingleFileInTree(bool)), this,
+    connect(&midWidget.pageSelect,SIGNAL(OnShowBtnBackToParent(bool)), this,
                                     SLOT(ShowBtnBackToParent(bool)));
 
     connect(&topWidget.m_toolbar.btnBackParent, SIGNAL(clicked(bool)),

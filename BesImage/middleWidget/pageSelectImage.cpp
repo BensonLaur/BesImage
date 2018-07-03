@@ -173,7 +173,7 @@ bool PageSelectImage::LoadFloder(QString path)
                vecFilePath.push_back(finfo.absoluteFilePath());
         }
 
-         emit(OnSelectSingleFileInTree(false)); //取消其显示
+         emit(OnShowBtnBackToParent(false)); //取消其显示
     }
     else if(fi.isFile())
     {
@@ -181,7 +181,7 @@ bool PageSelectImage::LoadFloder(QString path)
 
         if( AppConfig::GetInstance().IsValidOnlyShowOneImage())
         {
-            emit(OnSelectSingleFileInTree(false)); //只显示一张图片的模式时不显示返回父目录按钮
+            emit(OnShowBtnBackToParent(false)); //只显示一张图片的模式时不显示返回父目录按钮
 
             //直接选中当前文件，自动切换到显示图片页面
             emit(OnSelectOnePath(path));
@@ -190,7 +190,7 @@ bool PageSelectImage::LoadFloder(QString path)
         }
         else
             //此时为展示一个图片，为了能够返回选中整个父目录（在根目录为父目录时无法直接做到），发送信号
-            emit(OnSelectSingleFileInTree(true));
+            emit(OnShowBtnBackToParent(true));
     }
 
     vecLastFilePath = vecFilePath;
@@ -268,7 +268,11 @@ void PageSelectImage::SetFileTreeRootPath(QString rootPath)
 
             showImgUnderTreeItem(rootIndex);
         }
+        else
+            emit(OnShowBtnBackToParent(false)); //没有设置有效根路径的情况下，确认不显示目录返回按钮
     }
+    else
+        emit(OnShowBtnBackToParent(false));
 }
 
 void PageSelectImage::showImgUnderTreeItem(const QModelIndex &index)

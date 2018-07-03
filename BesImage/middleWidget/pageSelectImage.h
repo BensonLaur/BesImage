@@ -58,7 +58,7 @@ public Q_SLOTS:
     void selectParentOfLastItem();                          //选中最后项的父项
 
  signals:
-    void OnSelectSingleFileInTree(bool);                                    //只选中了单个文件
+    void OnShowBtnBackToParent(bool);                                //只选中了单个文件
     void OnFilesSelectedChanged();                                      //选择的树项发生改变
     void OnSelectOnePath(QString imagePath);                            //选中一个显示的路径
     void OnSelectBunchPath(QVector<QString> vecImagePath, int curSel);  //选中整个路径集合
