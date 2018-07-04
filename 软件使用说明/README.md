@@ -7,7 +7,7 @@
 
 使用步骤：
 
-1、下载软件：版本 [V1.0.0.0](https://github.com/BensonLaur/BesImage/releases/download/v1.0/besimage.zip)
+1、下载软件：版本 [V1.0.0.1](https://github.com/BensonLaur/BesImage/releases/download/v1.0.0.1/besimage.zip)
 
 2、根据用途更改配置文件即可，配置文件位置为 settings\app.config
 
