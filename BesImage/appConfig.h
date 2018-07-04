@@ -51,7 +51,7 @@ public:
             onlyShowOneImage = false;
             closeDirTreeOnOpen = false;
 
-            defaultBackgroundPath = "resource/default/background-main-1.jpg";
+            defaultBackgroundPath = "resource/default/1.jpg";
             besimageBlackIcon = "resource/default/besimage-black.ico";
             besimageWhiteIcon = "resource/default/besimage-white.ico";
             isWindowHeaderColorBlack = true;
