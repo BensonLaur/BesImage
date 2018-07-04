@@ -51,7 +51,7 @@ public Q_SLOTS:
 
     virtual void wheelEvent(QWheelEvent *event);
 
-    void slot_btnclicked();
+    void OnBtnTreeToggle();
 
     void OnClickImgItem(const QModelIndex &index);
 
@@ -63,8 +63,6 @@ public Q_SLOTS:
     void OnSelectOnePath(QString imagePath);                            //选中一个显示的路径
     void OnSelectBunchPath(QVector<QString> vecImagePath, int curSel);  //选中整个路径集合
     void OnSelectIndexInSet(int curSel);                                //选中集合中的某个下标
-
-
 
 private:
     QTreeView fileTree;             //文件树

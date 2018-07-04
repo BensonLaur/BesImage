@@ -71,6 +71,9 @@ void MainWindow::ApplyAppConfig()
 
     /* 先使用程序的默认设置项来设置程序 */
 
+    if(param.functionMode == FUNCTION_FULL) //全功能模式下，所有允许的自定义参数设为默认值
+        param.ClearUserCustomParameter();
+
     //设置背景图片
     setCurBGPic(param.defaultBackgroundPath);
 
@@ -88,12 +91,21 @@ void MainWindow::ApplyAppConfig()
         //不显示返回按钮
          topWidget.m_toolbar.btnReturn.setVisible(false);
 
-         //其他逻辑，在 上面 midWidget.pageSelect.SetFileTreeRootPath(param.initPath); 之后
+         //其它显示隐藏逻辑，在 上面 midWidget.pageSelect.SetFileTreeRootPath(param.initPath); 之后
          //    首先触发 showImgUnderTreeItem(rootIndex);
          //        然后 其中 LoadFloder(path); 载入列表时
          //             判断单个文件时，是IsValidOnlyShowOneImage ，则emit(OnSelectOnePath(path));
          //                 从而触发相关信号自动改变部分控件
     }
+
+    if(param.closeDirTreeOnOpen)
+    {
+        midWidget.pageSelect.OnBtnTreeToggle();
+    }
+
+    setCurBGPicIfValid(param.backgroundImagePath);
+
+    topWidget.SetIconIfPathValid(param.iconPath);
 }
 
 void MainWindow::clearBackground()
@@ -101,6 +113,7 @@ void MainWindow::clearBackground()
     m_mainwid.clearBg();
 }
 
+//直接设置背景图片
 inline void MainWindow::setCurBGPic(const QString& path)
 {
     //使用相对路径尝试构建出有效路径，如果无法构建出存在的文件路径，使用系统默认资源
@@ -112,6 +125,18 @@ inline void MainWindow::setCurBGPic(const QString& path)
         imagePath = QCoreApplication::applicationDirPath() +"/"+ path;
 
    m_mainwid.setCurBGPic(imagePath);
+}
+
+//在路径有效时设置背景图片
+void MainWindow::setCurBGPicIfValid(const QString& path)
+{
+    QFileInfo fi(path);
+    if(fi.isFile())
+    {
+        QPixmap pixmap = QPixmap(path);
+        if(!pixmap.isNull())
+            setCurBGPic(path);
+    }
 }
 
 void MainWindow::OnWindowHeaderDbClick(QMouseEvent *e)

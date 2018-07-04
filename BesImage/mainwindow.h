@@ -29,7 +29,8 @@ private:
 
     void clearBackground();
 
-    void setCurBGPic(const QString&);
+    void setCurBGPic(const QString&);           //直接设置背景图片
+    void setCurBGPicIfValid(const QString&);    //在路径有效时设置背景图片
 
 public slots:
 

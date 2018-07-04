@@ -23,7 +23,7 @@ PageSelectImage::PageSelectImage(QWidget *parent) : baseWidget(parent),
 
     connect(&fileTree,SIGNAL(clicked(const QModelIndex&)),this,SLOT(showImgUnderTreeItem(const QModelIndex&)));
 
-    connect(&m_btnhidelist,SIGNAL(clicked(bool)),this,SLOT(slot_btnclicked()));
+    connect(&m_btnhidelist,SIGNAL(clicked(bool)),this,SLOT(OnBtnTreeToggle()));
 
     connect(&imageList, SIGNAL(doubleClicked(QModelIndex)),this, SLOT(OnClickImgItem(QModelIndex)));
 
@@ -290,7 +290,7 @@ void PageSelectImage::showImgUnderTreeItem(const QModelIndex &index)
     LoadFloder(path);
 }
 
-void PageSelectImage::slot_btnclicked()
+void PageSelectImage::OnBtnTreeToggle()
 {
     if(fileTree.isHidden())//如果是隐藏的
     {

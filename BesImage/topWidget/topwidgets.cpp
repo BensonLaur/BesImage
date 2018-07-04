@@ -53,6 +53,18 @@ void TopWidgets::SetIcon(QIcon iconBlack, QIcon iconWhite)
     m_iconWhite = iconWhite;
 }
 
+//在路径有效时设置图标
+void TopWidgets::SetIconIfPathValid(const QString& path)
+{
+    QFileInfo fi(path);
+    if(fi.isFile())
+    {
+        QIcon icon = QIcon(path);
+        if(!icon.isNull())
+            m_btnIcon.setIcon(icon);
+    }
+}
+
 //设置标题
 void TopWidgets::SetTitle(QString title)
 {

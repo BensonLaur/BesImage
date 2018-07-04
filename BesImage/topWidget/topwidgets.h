@@ -23,6 +23,7 @@ public:
     //设置黑白图标路径，路径可以是运行目录相对路径 或 绝对路径
     void SetIcon(QString iconBlackPath,QString iconWhitePath);
     void SetIcon(QIcon iconBlack, QIcon iconWhite);               //设置黑色白色2个颜色的Icon
+    void SetIconIfPathValid(const QString&);                      //在路径有效时设置图标
     void SetTitle(QString title);                                 //设置标题
     void SetColorBlackOrWhite(bool setBlack);                     //设置整体颜色白色或黑色
 

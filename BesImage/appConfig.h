@@ -56,6 +56,16 @@ public:
             besimageWhiteIcon = "resource/default/besimage-white.ico";
             isWindowHeaderColorBlack = true;
         }
+
+        void ClearUserCustomParameter()
+        {
+            appTitle = "BesImage";
+            iconPath = "";
+            backgroundImagePath = "";
+            initPath = "";
+            onlyShowOneImage = false;
+            closeDirTreeOnOpen = false;
+        }
 };
 
 class AppConfig: public QObject{
