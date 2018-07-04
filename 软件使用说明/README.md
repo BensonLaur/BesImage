@@ -57,10 +57,11 @@
     <iconPath>            Icon 图标路径，只支持绝对路径
     <backgroundImagePath> 背景图片路径，只支持绝对路径
     <initPath>            浏览目录的初始路径，为空表示浏览整个硬盘文件系统；支持文件夹 和 单个图片文件路
-    <onlyShowOneImage>    是否启用只显示单个图片模式：0 表示不启用， 1表示启用；但图片模式 需要配合 initPath 使用，传入单个图片文件路径
+    <onlyShowOneImage>    是否启用只显示单个图片模式：0 表示不启用， 1表示启用；但图片模式 需要配合 initPath 使用，传
+                            入单个图片文件路径
     <closeDirTreeOnOpen>  是否在启动软件时，收起左边的目录树：0 表示不启用，1表示启用
 
-2、节点 *default*
+3、节点 *default*
 
     <default> 
 
