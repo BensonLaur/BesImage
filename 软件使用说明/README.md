@@ -32,6 +32,7 @@
             <besimageBlackIcon>resource/default/besimage-black.ico</besimageBlackIcon>
             <besimageWhiteIcon>resource/default/besimage-white.ico</besimageWhiteIcon>
             <isWindowHeaderColorBlack>1</isWindowHeaderColorBlack>
+			<bgFillMode>0</bgFillMode>
         </default>
     </appConfig>
 
@@ -73,4 +74,8 @@
     <besimageBlackIcon>           程序黑色风格图标路径，支持绝对路径和相对路径
     <besimageWhiteIcon>           程序白色风格图标路径，支持绝对路径和相对路径
     <isWindowHeaderColorBlack>    窗口标题是否使用黑色风格，1 为是， 0 为否
-
+	<bgFillMode>                  背景图片的填充模式：
+									0 保持纵横比，且填满窗口
+									1 忽略纵横比，拉升填满窗口
+									2 使用原来尺寸，不管是否能填满窗口
+									3 使用原来尺寸，不填满窗口时，重复图片以填充

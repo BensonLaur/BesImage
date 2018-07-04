@@ -48,24 +48,22 @@ void baseWindow::paintEvent(QPaintEvent *e)
 ////////////////////////////////////////////////////////////////////
 Widget::Widget(QWidget *parent):QWidget(parent)
 {
-    m_bShowSinger=false;
-    m_isShowSingerBG=true;
+    m_BGFillMode = BG_FILL_MODE_KEEP_ASPECT_RATIO_AND_FULL;
 }
+
+void Widget::SetBackgroundFillMode(BGFillMode fillMode)
+{
+    m_BGFillMode = fillMode;
+}
+
 void Widget::setCurBGPic(const QString &strPix)
 {
     m_netPic.load(strPix);
-    m_bShowSinger=true;
     update();
-}
-
-void Widget::setShowSingerBG(bool is)
-{
-    m_isShowSingerBG=is;
 }
 
 void Widget::clearBg()
 {
-    m_bShowSinger=false;
     m_netPic.load("");
     update();
 }
@@ -80,31 +78,52 @@ void Widget::setSkin(const QString &skin)
 void Widget::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
-    if(!m_bShowSinger)
+
+    switch(m_BGFillMode)
     {
-        float d =(float)m_skinPic.height()/m_skinPic.width();
-        int h=d*width();
-        int w=height()/d;
-        if(h<height())//如果图片高度小于窗口高度
+    case BG_FILL_MODE_KEEP_ASPECT_RATIO_AND_FULL:   //保持纵横比，且填满窗口
         {
-            painter.drawPixmap(0,0,w,height(),m_skinPic);
-            return;
+            float d =(float)m_netPic.height()/m_netPic.width();
+            int h=d*width();
+            int w=height()/d;
+            if(h<height())//如果图片高度小于窗口高度
+                painter.drawPixmap(0,0,w,height(),m_netPic);
+            else
+                painter.drawPixmap(0,0,width(),h,m_netPic);
         }
-        painter.drawPixmap(0,0,width(),h,m_skinPic);
-        return;
-    }
-    if(m_bShowSinger && m_isShowSingerBG)
-    {
-        float d =(float)m_netPic.height()/m_netPic.width();
-        int h=d*width();
-        int w=height()/d;
-        if(h<height())//如果图片高度小于窗口高度
+        break;
+    case BG_FILL_MODE_IGNORE_ASPECT_RATIO_AND_FULL:  //忽略纵横比，拉升填满窗口
         {
-             painter.drawPixmap(0,0,w,height(),m_netPic);
-             return;
+            QPixmap pixmapToShow = m_netPic;
+            pixmapToShow.scaled(width(), height(),Qt::IgnoreAspectRatio);
+            painter.drawPixmap(0,0,width(),height(),pixmapToShow);
         }
-        painter.drawPixmap(0,0,width(),h,m_netPic);
+        break;
+    case BG_FILL_MODE_ORIGINAL_SIZE_SINGLE:  //忽略纵横比，拉升填满窗口
+        {
+            QPixmap pixmapToShow = m_netPic;
+            pixmapToShow.scaled(width(), height(),Qt::IgnoreAspectRatio);
+            painter.drawPixmap(0,0,pixmapToShow);
+        }
+        break;
+
+     case BG_FILL_MODE_ORIGINAL_SIZE_FULL:   //使用原来尺寸，不填满窗口时，重复图片
+        {
+            QPixmap pixmapToShow = m_netPic;
+            pixmapToShow.scaled(width(), height(),Qt::IgnoreAspectRatio);
+
+            for(int i =0; i *pixmapToShow.width() < width(); i++)
+            {
+                for(int j=0; j*pixmapToShow.height() < height(); j++)
+                    painter.drawPixmap(i * pixmapToShow.width(),j * pixmapToShow.height(),pixmapToShow);
+            }
+        }
+        break;
+
+    default:
+        break;
     }
+
 }
 
 

@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
+#include "basewindow.h"
 
 enum  FunctionMode              //软件功能模式
 {
@@ -40,6 +41,7 @@ public:
         QString                     besimageBlackIcon;      //默认黑色Icon路径
         QString                     besimageWhiteIcon;      //默认白色Icon路径
         bool                        isWindowHeaderColorBlack;//窗口头部颜色（黑色或白色）
+        BGFillMode                  bgFillMode;              //背景图片填充模式
 
         AppConfigParameter()
         {
@@ -55,6 +57,7 @@ public:
             besimageBlackIcon = "resource/default/besimage-black.ico";
             besimageWhiteIcon = "resource/default/besimage-white.ico";
             isWindowHeaderColorBlack = true;
+            bgFillMode = BG_FILL_MODE_KEEP_ASPECT_RATIO_AND_FULL;
         }
 
         void ClearUserCustomParameter()

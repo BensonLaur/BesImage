@@ -221,6 +221,10 @@ void AppConfig::parseDefault(QXmlStreamReader &reader, AppConfigParameter &param
             {
                 param.isWindowHeaderColorBlack = reader.readElementText().toInt()== 0 ? false:true;
             }
+            else if(strElementName == "bgFillMode")
+            {
+                param.bgFillMode = (BGFillMode)reader.readElementText().toInt();
+            }
         }
         else if(reader.isEndElement()) {
 
@@ -273,6 +277,7 @@ bool AppConfig::SaveAppConfig()
     writer.writeTextElement("besimageBlackIcon", m_param.besimageBlackIcon);
     writer.writeTextElement("besimageWhiteIcon", m_param.besimageWhiteIcon);
     writer.writeTextElement("isWindowHeaderColorBlack", QString::number(m_param.isWindowHeaderColorBlack ? 1 : 0));
+    writer.writeTextElement("bgFillMode", QString::number((int)m_param.bgFillMode));
 
     writer.writeEndElement();  // 结束子元素 </default>
 

@@ -67,7 +67,6 @@ void MainWindow::ApplyAppConfig()
 {
     AppConfigParameter param;
     AppConfig::GetInstance().GetAppParameter(param);
-    //AppConfig::GetInstance().SetAppParameter(param);
 
     /* 先使用程序的默认设置项来设置程序 */
 
@@ -81,6 +80,7 @@ void MainWindow::ApplyAppConfig()
     topWidget.SetIcon(param.besimageBlackIcon, param.besimageWhiteIcon);
     topWidget.SetColorBlackOrWhite(param.isWindowHeaderColorBlack);
 
+    m_mainwid.SetBackgroundFillMode(param.bgFillMode);
 
     /* 使用有效的用户配置项来定义程序 */
     topWidget.SetTitle(param.appTitle);
@@ -106,6 +106,9 @@ void MainWindow::ApplyAppConfig()
     setCurBGPicIfValid(param.backgroundImagePath);
 
     topWidget.SetIconIfPathValid(param.iconPath);
+
+
+    AppConfig::GetInstance().SetAppParameter(param);  //写入当前配置，方便更新升级配置
 }
 
 void MainWindow::clearBackground()

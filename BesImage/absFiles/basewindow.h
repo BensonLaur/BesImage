@@ -12,23 +12,31 @@
 #include<QStyleOption>
 #include"AbsFrameLessAutoSize.h"
 
+enum BGFillMode     //背景图片的填充模式
+{
+    BG_FILL_MODE_KEEP_ASPECT_RATIO_AND_FULL =0, //保持纵横比，且填满窗口
+    BG_FILL_MODE_IGNORE_ASPECT_RATIO_AND_FULL,  //忽略纵横比，拉升填满窗口
+    BG_FILL_MODE_ORIGINAL_SIZE_SINGLE,          //使用原来尺寸，不管是否填满窗口
+    BG_FILL_MODE_ORIGINAL_SIZE_FULL,            //使用原来尺寸，不填满窗口时，重复图片
+};
+
 class Widget:public QWidget
 {
     Q_OBJECT
 public:
    explicit Widget(QWidget*parent=0);
 
+    void SetBackgroundFillMode(BGFillMode fillMode);
+
     void setCurBGPic(const QString&);
-
-    void setShowSingerBG(bool is=true);
-
-    bool isShowSingerBG(){return m_isShowSingerBG;}
 
     void clearBg();
 
     const QString currentSkinPath(){return m_curPixPath;}
 
     inline QPixmap getRectPix(const QRect&rect){update();return  m_curPix.copy(rect);}
+
+
 protected:
     virtual void paintEvent(QPaintEvent *);
  public slots:
@@ -39,8 +47,7 @@ private:
     QPixmap m_skinPic;
     QPixmap m_curPix; //not the normal size
 
-    bool m_bShowSinger;
-    bool m_isShowSingerBG;
+    BGFillMode m_BGFillMode;        //背景填充模式
 };
 
 class baseWindow : public AbsFrameLessAutoSize
